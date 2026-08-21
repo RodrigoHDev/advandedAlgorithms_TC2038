@@ -1,0 +1,12 @@
+//Enter number of elements to sort:
+
+1
+
+//Enter the elements, one per line:
+
+680
+
+
+//Expected result:
+
+//680.00
