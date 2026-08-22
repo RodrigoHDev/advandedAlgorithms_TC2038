@@ -53,14 +53,12 @@ class MoneyChange{
      *   
      * The result is reconstructed by backtracking through the lastCoin array.
      *
-     * Time Complexity: O(C * Q) + O(C log C) for sorting the coins.
+     * Time Complexity: O(C * Q), assuming the denominations are sorted
+     * before calling this function. Sorting separately costs O(C log C).
      * Space Complexity: O(Q)
      */
 
-     vector<int> giveChangeDP(int quantity, vector<int> coins){
-        // DP does not require coins to be sorted, but we sort them for consistency in output
-        sortCoins(coins);
-
+     vector<int> giveChangeDP(int quantity, vector<int>& coins){
         int numCoins = 0;
 
         // INF: A value greater than the maximum possible number of coins needed
@@ -76,7 +74,7 @@ class MoneyChange{
         // We initialize 0 to 0
         dp[0] = 0;
 
-        // Caluclate best solution for all amounts from 1 to quantity
+        // Calculate best solution for all amounts from 1 to quantity
         for (int currentAmount = 1; currentAmount <= quantity; ++currentAmount) {
             // Test for every coin
             for (int coinIndex = 0; coinIndex < coins.size(); ++coinIndex) {
@@ -124,15 +122,14 @@ class MoneyChange{
     *
     * Return: number of coins used for each denomination.
     *
-    * Time Complexity: O(C)
-    * Time complexity with sort: O(C log C).
+    * Time Complexity: O(C + K), where K is the number of coins selected.
+    * In the worst case, K = Q / v_min, so the complexity is
+    * O(C + Q / v_min), assuming the denominations are sorted before
+    * calling this function. Sorting separately costs O(C log C).
     * Space Complexity: O(C)
     */
 
     vector<int> giveChangeGreedy(int quantity, vector<int>& coins){
-        // Sort the coins in descending order
-        sortCoins(coins);
-
         // Initialize the result vector to store the count of each coin used
         vector<int> result(coins.size(), 0);
         int remainingAmount = quantity;
@@ -150,10 +147,10 @@ class MoneyChange{
     };
 
     void printResult(const vector<int>& result, const vector<int>& coins) {
-        cout << "Coin Distribution:" << endl;
         for (size_t i = 0; i < result.size(); ++i) {
-            cout << "Coin " << coins[i] << ": " << result[i] << endl;
+            cout << result[i] << " ";
         }
+        cout << endl;
     }
 
     vector<int> getSortedCoins(vector<int>& coins){
