@@ -21,24 +21,34 @@
 
 using namespace std;
 
+/*
+For complexity analysis take into consideration:
+    C = number of coins' values.
+    Q = quantity being looked for.
+*/
 class MoneyChange{
-    public:
+	public:
 
-    /*
-    For complexity analysis take into consideration:
-        C = number of coins' values.
-        Q = quantity being looked for.
-    */
-    void sortCoins(vector<int>& coins){
-        sort(coins.begin(), coins.end(), greater<int>());
-    };
-    
-    /*
-    MoneyChange()
-    Default constructor of the class MoneyChange
-    */
+	/*
+	sortCoins()
+	Sorts the coin denominations in descending order, required by the
+	Greedy algorithm and for consistent output ordering.
 
-    MoneyChange(){};
+	coins: vector of coin denominations to be sorted, modified in place.
+	Return: none.
+	*/
+	void sortCoins(vector<int>& coins){
+		sort(coins.begin(), coins.end(), greater<int>());
+	};
+
+	/*
+	MoneyChange()
+	Default constructor of the class MoneyChange
+
+	Return: none.
+	*/
+	MoneyChange(){};
+
 
     /*
      * Dynamic Programming
@@ -56,59 +66,57 @@ class MoneyChange{
      * Space Complexity: O(Q + C), for the intermediate vectors to obtain the
      * answer and the vector to store it.
      */
+    
+	vector<int> giveChangeDP(int quantity, vector<int>& coins){
+		// INF: A value greater than the maximum possible number of coins needed
+		// Why? We intialize the dp array to ensure that any valid solution will 
+		// be less than this value. Only works if the smallest coin is >=1.
+		int INF = quantity + 1; 
 
-     vector<int> giveChangeDP(int quantity, vector<int>& coins){
-        int numCoins = 0;
+		vector<int> dp(quantity + 1, INF);
 
-        // INF: A value greater than the maximum possible number of coins needed
-        // Why? We intialize the dp array to ensure that any valid solution will 
-        // be less than this value. Only works if the smallest coin is >=1.
-        int INF = quantity + 1; 
+		// Used to reconstruct the solution
+		vector<int> lastCoin(quantity + 1, -1);
 
-        vector<int> dp(quantity + 1, INF);
+		// We initialize 0 to 0
+		dp[0] = 0;
 
-        // Used to reconstruct the solution
-        vector<int> lastCoin(quantity + 1, -1);
+		// Calculate best solution for all amounts from 1 to quantity
+		for (int currentAmount = 1; currentAmount <= quantity; ++currentAmount) {
+			// Test for every coin
+			for (int coinIndex = 0; coinIndex < coins.size(); ++coinIndex) {
 
-        // We initialize 0 to 0
-        dp[0] = 0;
+				int coinValue = coins[coinIndex];
+				// Coins greater that the current amount cannot be used 
+				if (coinValue <= currentAmount) {
+					// If using this coin results in a solution with fewer coins and the 
+					// previous solution is valid, update dp and lastCoin
+					if (dp[currentAmount - coinValue] + 1 < dp[currentAmount]) {
+						dp[currentAmount] = dp[currentAmount - coinValue] + 1;
+						lastCoin[currentAmount] = coinIndex;
+					}
+				}
+			}
+		}
 
-        // Calculate best solution for all amounts from 1 to quantity
-        for (int currentAmount = 1; currentAmount <= quantity; ++currentAmount) {
-            // Test for every coin
-            for (int coinIndex = 0; coinIndex < coins.size(); ++coinIndex) {
-                
-                int coinValue = coins[coinIndex];
-                // Coins greater that the current amount cannot be used 
-                if (coinValue <= currentAmount) {
-                    // If using this coin results in a solution with fewer coins and the 
-                    // previous solution is valid, update dp and lastCoin
-                    if (dp[currentAmount - coinValue] + 1 < dp[currentAmount]) {
-                        dp[currentAmount] = dp[currentAmount - coinValue] + 1;
-                        lastCoin[currentAmount] = coinIndex;
-                    }
-                }
-            }
-        }
+		vector<int> result(coins.size(), 0);
 
-        vector<int> result(coins.size(), 0);
+		// no solution exists
+		if (dp[quantity] == INF) {
+			return result; // Return a vector of zeros
+		}
 
-        // no solution exists
-        if (dp[quantity] == INF) {
-            return result; // Return a vector of zeros
-        }
+		// Reconstruct the solution
+		int remainingAmount = quantity;
 
-        // Reconstruct the solution
-        int remainingAmount = quantity;
+		while (remainingAmount > 0) {
+			int coinIndex = lastCoin[remainingAmount];
+			result[coinIndex]++;
+			remainingAmount -= coins[coinIndex];
+		}
 
-        while (remainingAmount > 0) {
-            int coinIndex = lastCoin[remainingAmount];
-            result[coinIndex]++;
-            remainingAmount -= coins[coinIndex];
-        }
-
-        return result;
-    };
+		return result;
+	};
 
 
     /*
@@ -128,35 +136,50 @@ class MoneyChange{
     * Space Complexity: O(C)
     */
 
-    vector<int> giveChangeGreedy(int quantity, vector<int>& coins){
-        // Initialize the result vector to store the count of each coin used
-        vector<int> result(coins.size(), 0);
-        int remainingAmount = quantity;
+	vector<int> giveChangeGreedy(int quantity, vector<int>& coins){
+		// Initialize the result vector to store the count of each coin used
+		vector<int> result(coins.size(), 0);
+		int remainingAmount = quantity;
 
-        // Iterate through the sorted coins and use as many of each coin as possible
-        for (int i = 0; i < coins.size(); ++i) {
-            // if the coin value is less than or equal to the remaining amount, use it
-            while (remainingAmount >= coins[i]) {
-                remainingAmount -= coins[i];
-                result[i]++;
-            }
-        }
+		// Iterate through the sorted coins and use as many of each coin as possible
+		for (int i = 0; i < coins.size(); ++i) {
+			// if the coin value is less than or equal to the remaining amount, use it
+			while (remainingAmount >= coins[i]) {
+				remainingAmount -= coins[i];
+				result[i]++;
+			}
+		}
 
-        return result;
-    };
+		return result;
+	};
 
-    void printResult(const vector<int>& result, const vector<int>& coins) {
-        for (size_t i = 0; i < result.size(); ++i) {
-            cout << "Coin: " << to_string(coins[i]) << " Amount: " << to_string(result[i]) << " " <<endl;
-        }
-        cout << endl;
-        return;
-    }
+	/*
+	printResult()
+	Prints the number of coins used for each denomination to standard output.
 
-    vector<int> getSortedCoins(vector<int>& coins){
-        sortCoins(coins);
-        return coins;
-    };
+	result: number of coins used for each denomination.
+	coins: coin denominations corresponding to each entry in result.
+	Return: none.
+	*/
+	void printResult(const vector<int>& result, const vector<int>& coins) {
+		for (size_t i = 0; i < result.size(); ++i) {
+			cout << "Coin: " << to_string(coins[i]) << " Amount: " << to_string(result[i]) << " " << endl;
+		}
+		cout << endl;
+		return;
+	}
+
+	/*
+	getSortedCoins()
+	Sorts the given coin denominations in descending order and returns them.
+
+	coins: vector of coin denominations to be sorted, modified in place.
+	Return: the same vector of coins, sorted in descending order.
+	*/
+	vector<int> getSortedCoins(vector<int>& coins){
+		sortCoins(coins);
+		return coins;
+	};
 };
 
 #endif
