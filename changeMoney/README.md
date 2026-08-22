@@ -89,14 +89,19 @@ for f in input/*.txt; do ./moneyChange < "$f"; done
 
 Tests were run on August 21, 2026 with `g++ 15.2.0` and C++17. Compilation succeeded and all four input files executed successfully.
 
-| Test case | Change | Dynamic programming | Greedy |
-| --- | ---: | ---: | ---: |
-| `input1.txt` | 175 | 4 coins | 4 coins |
-| `input2.txt` | 40 | 2 coins | 3 coins |
-| `input3.txt` | 15 | 3 coins | 6 coins |
-| `input4.txt` | 289 | 10 coins | 10 coins |
-| `input5.txt` | 0 | 0 coins | 0 coins |
-| `input6.txt` | 10 | 2 coins | 2 coins |
-| `input7.txt` | -25 | Invalid | Invalid |
+| Test case | Change | Dynamic programming | Greedy | Image |
+| --- | ---: | ---: | ---: | ---: | 
+| `input1.txt` | 175 | 4 coins | 4 coins |<img width="1141" height="271" alt="Screenshot 2026-08-22 004513" src="https://github.com/user-attachments/assets/acd573fd-23e5-4c29-b857-20ab6fbc82c7" />|
+| `input2.txt` | 40 | 2 coins | 3 coins |<img width="1136" height="267" alt="Screenshot 2026-08-22 004523" src="https://github.com/user-attachments/assets/243ce4d1-8067-4bf4-976c-0906b04f6237" />|
+| `input3.txt` | 15 | 3 coins | 6 coins |<img width="1139" height="230" alt="Screenshot 2026-08-22 004531" src="https://github.com/user-attachments/assets/87cb3f2c-bfbe-4f15-92a0-11942130b313" />|
+| `input4.txt` | 289 | 10 coins | 10 coins |<img width="1136" height="318" alt="Screenshot 2026-08-22 004539" src="https://github.com/user-attachments/assets/b169c57c-b066-4616-bf94-ae517e3e22a3" />|
+| `input5.txt` | 0 | 0 coins | 0 coins |<img width="1144" height="232" alt="Screenshot 2026-08-22 004548" src="https://github.com/user-attachments/assets/849ad8ae-ef7b-4a4c-a4d7-8a9d392c3c18" />|
+| `input6.txt` | 10 | 2 coins | 2 coins |<img width="1138" height="186" alt="Screenshot 2026-08-22 004557" src="https://github.com/user-attachments/assets/47109685-a47c-49e4-ac92-abbbe0033a5a" />|
+| `input7.txt` | -25 | Invalid | Invalid |<img width="1146" height="61" alt="Screenshot 2026-08-22 004604" src="https://github.com/user-attachments/assets/952e46f1-2c73-4632-8689-d187fe1a4cf8" />|
+| `input8.txt` | 1 |  0 coins | 0 coins  |<img width="1137" height="186" alt="Screenshot 2026-08-22 004616" src="https://github.com/user-attachments/assets/812525c8-cc3e-4da7-9068-a1ac130ea5f8" />|
+
 
 The results show that greedy is not always optimal. In `input2.txt` and `input3.txt`, dynamic programming uses fewer coins than greedy.
+
+
+
