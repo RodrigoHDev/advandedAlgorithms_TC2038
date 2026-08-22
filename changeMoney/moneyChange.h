@@ -1,19 +1,19 @@
 /* 
- * Title: moneyChangeGreedy.h
+ * Title: moneyChange.h
  * 
  * Description: 
- * Greedy approach towards obtaing the minimum number of coins to return a concrete
+ * Greedy and dynamic approach towards obtaing the minimum number of coins to return a concrete
  * quantity of money based on an infinite number of designated value coins/bills.
  * 
  * Implementation for the subject - Analysis and Design of Advanced
  * Algorithms
  * 
- * Author: Alexis Yaocalli Berthou Haas - A01713458
+ * Author: Alexis Yaocalli Berthou Haas - A01713458 & Rodrigo Alejandro Hurtado Cortés - A01713854
  * Date: August 21, 2026
  */
 
-#ifndef MONEYCHANGEGREEDY_H
-#define MONEYCHANGEGREEDY_H
+#ifndef MONEYCHANGE_H
+#define MONEYCHANGE_H
 
 #include <iostream>
 #include <vector>
@@ -22,18 +22,16 @@
 using namespace std;
 
 class MoneyChange{
+    public:
+
     /*
     For complexity analysis take into consideration:
         C = number of coins' values.
         Q = quantity being looked for.
     */
-    private:
-
     void sortCoins(vector<int>& coins){
         sort(coins.begin(), coins.end(), greater<int>());
     };
-
-    public:
     
     /*
     MoneyChange()
@@ -55,7 +53,8 @@ class MoneyChange{
      *
      * Time Complexity: O(C * Q), assuming the denominations are sorted
      * before calling this function. Sorting separately costs O(C log C).
-     * Space Complexity: O(Q)
+     * Space Complexity: O(Q + C), for the intermediate vectors to obtain the
+     * answer and the vector to store it.
      */
 
      vector<int> giveChangeDP(int quantity, vector<int>& coins){
@@ -109,7 +108,7 @@ class MoneyChange{
         }
 
         return result;
-     };
+    };
 
 
     /*
@@ -148,9 +147,10 @@ class MoneyChange{
 
     void printResult(const vector<int>& result, const vector<int>& coins) {
         for (size_t i = 0; i < result.size(); ++i) {
-            cout << result[i] << " ";
+            cout << "Coin: " << to_string(coins[i]) << " Amount: " << to_string(result[i]) << " " <<endl;
         }
         cout << endl;
+        return;
     }
 
     vector<int> getSortedCoins(vector<int>& coins){

@@ -16,7 +16,7 @@ Let:
 Complexity:
 
 - Time: `O(CQ)` when the denominations are already sorted. Sorting separately costs `O(C log C)`.
-- Space: `O(Q + C)`.
+- Space: `O(C)`.
 
 ### Greedy
 
@@ -67,5 +67,8 @@ Tests were run on August 21, 2026 with `g++ 15.2.0` and C++17. Compilation succe
 | `input2.txt` | 40 | 2 coins | 3 coins |
 | `input3.txt` | 15 | 3 coins | 6 coins |
 | `input4.txt` | 289 | 10 coins | 10 coins |
+| `input5.txt` | 0 | 0 coins | 0 coins |
+| `input6.txt` | 10 | 2 coins | 2 coins |
+| `input7.txt` | -25 | Invalid | Invalid |
 
 The results show that greedy is not always optimal. In `input2.txt` and `input3.txt`, dynamic programming uses fewer coins than greedy.

@@ -16,7 +16,7 @@ int main(){
     cin >> coinTypes;
 
     vector<int> coins(coinTypes);
-    for (int i = 0; i < coinTypes; ++i) {
+    for (int i = 0; i < coinTypes; i++) {
         cin >> coins[i];
     }
 
@@ -27,21 +27,26 @@ int main(){
     cin >> payment;
 
     int changeAmount = payment - price;
+    if(changeAmount < 0){
+        cout<<"Amount to pay is greater than money. Invalid"<<endl;
+        cout << endl;
+    }
+    else{
+        // Initialize MoneyChange object
+        MoneyChange moneyChange;
 
-    // Initialize MoneyChange object
-    MoneyChange moneyChange;
+        // Sort coins in descending order for the greedy algorithm and output consistency
+        moneyChange.sortCoins(coins);
 
-    // Sort coins in descending order for the greedy algorithm and output consistency
-    moneyChange.sortCoins(coins);
+        // Calculate change using Dynamic Programming and Greedy Algorithm
+        cout << "Greedy Algorithm Result:" << endl;
+        vector<int> resultGreedy = moneyChange.giveChangeGreedy(changeAmount, coins);
+        moneyChange.printResult(resultGreedy, coins);
 
-    // Calculate change using Dynamic Programming and Greedy Algorithm
-    cout << "Greedy Algorithm Result:" << endl;
-    vector<int> resultGreedy = moneyChange.giveChangeGreedy(changeAmount, coins);
-    moneyChange.printResult(resultGreedy, coins);
-
-    cout << "Dynamic Programming Result:" << endl;
-    vector<int> resultDP = moneyChange.giveChangeDP(changeAmount, coins);
-    moneyChange.printResult(resultDP, coins);
+        cout << "Dynamic Programming Result:" << endl;
+        vector<int> resultDP = moneyChange.giveChangeDP(changeAmount, coins);
+        moneyChange.printResult(resultDP, coins);
+    }    
 
     return 0;
 }
