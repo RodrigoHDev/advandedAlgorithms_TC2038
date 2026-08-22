@@ -6,38 +6,36 @@
 #include <string>
 #include <iomanip>
 
-#include "moneyChangeDP.h"
+#include "moneyChange.h"
 
 using namespace std;
 
 int main(){
+    int coinTypes;
+    cin >> coinTypes;
 
-    int number = 0;
-    int coins = 0;
-    int amount = 0;
-    vector<int> coinsVec = {};
-
-    cout<<"Enter quantity: "<<endl;
-    cin >> number;
-    cin.ignore();
-
-    cout<<"Enter number of coins: "<<endl;
-    cin >> coins;
-    cin.ignore();
-
-    cout<< "Enter the coins values in ascending order: " <<endl;
-    for(int i = 0; i< coins; i++){
-        cin>>amount;
-        cin.ignore();
-        coinsVec.push_back(amount);
+    vector<int> coins(coinTypes);
+    for (int i = 0; i < coinTypes; ++i) {
+        cin >> coins[i];
     }
 
-    MoneyChangeDP mon = MoneyChangeDP();
-    vector<int> numCoins = mon.giveChange(number, coinsVec);
-    
-    for(int i = 0; i < coinsVec.size(); i++){
-        cout<<"Coin: "<<to_string(coinsVec[i])<<" Amount: "<<to_string(numCoins[i])<<endl;
-    }
+    int price;
+    cin >> price;
+
+    int payment;
+    cin >> payment;
+
+    int changeAmount = payment - price;
+
+    MoneyChange moneyChange;
+
+    cout << "Dynamic Programming Result:" << endl;
+    vector<int> resultDP = moneyChange.giveChangeDP(changeAmount, coins);
+    moneyChange.printResult(resultDP, coins);
+
+    cout << "Greedy Algorithm Result:" << endl;
+    vector<int> resultGreedy = moneyChange.giveChangeGreedy(changeAmount, coins);
+    moneyChange.printResult(resultGreedy, coins);
 
     return 0;
 }
