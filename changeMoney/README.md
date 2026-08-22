@@ -1,5 +1,12 @@
 # Coin Change Algorithms
 
+Authors:
+- Alexis Yaocalli Berthou Haas - A01713458
+- Rodrigo Alejandro Hurtado Cortés - A01713854
+
+
+<br>
+
 This project compares two coin-change algorithms implemented in `moneyChange.h`:
 
 ## Algorithms
@@ -32,7 +39,6 @@ If `K` is the number of coins selected and `v_min` is the smallest positive deno
 Open Command Prompt and move to the `changeMoney` folder. Then run the following commands:
 
 Compile the program:
-
 ```cmd
 g++ main.cpp -o moneyChange.exe
 ```
