@@ -32,9 +32,11 @@ return: None.
 */
 void printMaze(vector<vector<int>> maze, string name){
     if(maze[0][0]==-1){
+        cout<<endl;
         cout<<"NO VALID SOLUTION"<<endl;
     }
     else{
+        cout<<endl;
         cout<<"Printing: " << name <<endl;
         cout<<endl;
 
@@ -80,11 +82,9 @@ int main(){
     //Printing of the original maze
     printMaze(maze, "Original");
 
-
     //Process though the Brand & Bound algorithm
     branchBound b;
     vector<vector<int>> final = b.travelMaze(maze, rows, columns);
-    cout<<endl;
     
     //Printing of the obtained maze from Brand & Bound algorithm
     printMaze(final, "Poda");
