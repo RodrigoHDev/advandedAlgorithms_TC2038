@@ -27,8 +27,9 @@ using namespace std;
 /**
  * printMaze()
  * Prints a maze or its solution.
+ * Complexity: O(M*N) time and O(1) auxiliary space.
  */
-void printMaze(vector<vector<int>> maze, string name) {
+void printMaze(const vector<vector<int>>& maze, const string& name) {
 
     cout << endl;
     cout << name << endl;
@@ -38,9 +39,9 @@ void printMaze(vector<vector<int>> maze, string name) {
         return;
     }
 
-    for (int i = 0; i < maze.size(); i++) {
+    for (size_t i = 0; i < maze.size(); i++) {
 
-        for (int j = 0; j < maze[0].size(); j++) {
+        for (size_t j = 0; j < maze[0].size(); j++) {
             cout << maze[i][j] << " ";
         }
 
@@ -53,13 +54,18 @@ void printMaze(vector<vector<int>> maze, string name) {
  * main()
  * Reads the maze and solves it using
  * Backtracking and Branch & Bound.
+ * Complexity: besides reading and printing O(M*N), it is dominated by each
+ * solver, whose worst-case time is O(3^(M*N)) and auxiliary space O(M*N).
  */
 int main() {
 
     int rows;
     int columns;
 
-    cin >> rows >> columns;
+    if (!(cin >> rows >> columns)) {
+        cout << "ERROR: rows and columns must be positive integers." << endl;
+        return 1;
+    }
 
     // Validate maze dimensions
     if (rows <= 0 || columns <= 0) {
@@ -74,7 +80,10 @@ int main() {
 
         for (int j = 0; j < columns; j++) {
 
-            cin >> maze[i][j];
+            if (!(cin >> maze[i][j])) {
+                cout << "ERROR: maze values must be 0 or 1." << endl;
+                return 1;
+            }
 
             // Only 0 and 1 are valid
             if (maze[i][j] != 0 && maze[i][j] != 1) {

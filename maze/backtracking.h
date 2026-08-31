@@ -35,8 +35,9 @@ private:
     /**
      * Busca un camino desde la posición actual hasta la salida.
      *
-     * Criterio de avance:
-     * abajo -> derecha -> izquierda -> arriba
+     * Criterio de avance: abajo -> derecha -> izquierda -> arriba.
+     * Complejidad: tiempo O(3^(M*N)) en el peor caso y espacio O(M*N),
+     * considerando visited, solution y la pila de recursion.
      */
     bool findWay(const vector<vector<int>>& maze, int row, int col) {
 
@@ -101,6 +102,7 @@ public:
      * @param rows Número de filas del laberinto.
      * @param cols Número de columnas del laberinto.
      * @return Una matriz que representa el camino encontrado, o {{-1}} si no hay camino.
+     * Complejidad: tiempo O(3^(M*N)) y espacio O(M*N).
      */
 
     vector<vector<int>> travelMaze(

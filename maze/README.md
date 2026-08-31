@@ -1,161 +1,184 @@
-# Maze Traversal Algorithms
+# Resolucion de laberintos: Backtracking y Ramificacion y Poda
 
-Authors:
+**Autores:**
+
 - Alexis Yaocalli Berthou Haas - A01713458
-- Rodrigo Alejandro Hurtado Cortés - A01713854
+- Rodrigo Alejandro Hurtado Cortes - A01713854
 
-<br>
+## Proposito
 
-## Introduction
+El programa recibe un laberinto de `M` filas por `N` columnas. Una celda con
+`1` es transitable y una con `0` es una pared. El origen es `(0, 0)` y la
+meta es `(M-1, N-1)`. Se imprime primero el laberinto original y despues una
+solucion obtenida con cada tecnica.
 
-Given a maze represented as a grid of `0`s and `1`s, where `0` marks a wall
-and `1` marks a free tile, the goal is to find the shortest path — measured
-in number of steps — from the origin `[0][0]` to the exit `[rows-1][columns-1]`.
- Movement is restricted to the four orthogonal directions (up, down, left, 
- right) and a tile cannot be revisited within the same path.
+Los movimientos son ortogonales y una celda no puede repetirse dentro del
+mismo camino. Si no existe solucion, se muestra `NO VALID SOLUTION`.
 
-This project explores two ways of solving this problem, backtracking implemented in
-`!!![INSERTA TU ARCHIVO AQUI ALEXIS]!!!` and branch & bound implemented in`branchBound.h`:
-
-## Algorithms
+## Tecnicas utilizadas
 
 ### Backtracking
 
-*(To be implemented.)*
+`Backtracking::findWay` construye un camino de forma recursiva. Marca la
+celda actual, intenta los movimientos en el orden **abajo, derecha, izquierda
+y arriba**, y desmarca la celda si ninguna alternativa llega a la meta. La
+primera ruta valida que encuentra se imprime como solucion.
 
-### Branch and Bound
+- Tiempo en el peor caso: `O(3^(M*N))`.
+- Espacio auxiliar: `O(M*N)` por las matrices `visited` y `solution`, mas la
+  pila recursiva.
 
-`findWay` explores the maze recursively, treating every tile as a node with
-up to four possible children (its orthogonal neighbors). The algorithm keeps
-two pieces of state as it explores:
+### Ramificacion y poda
 
-- `way`: the path currently being explored, represented as a stack of
-  coordinates. A tile is pushed onto `way` when it is entered and popped
-  once every direction from that tile has been explored, so `way` always
-  reflects only the branch currently under consideration.
-- `bestSteps` / `bestWay`: the cost and path of the best complete solution
-  found so far.
+`branchBound::findWay` explora caminos simples y conserva la ruta mas corta
+encontrada. Cuando el costo de una ruta parcial ya es igual o mayor que el de
+la mejor ruta conocida, se descarta: esa es la poda. El orden de avance es
+**abajo, arriba, izquierda y derecha**.
 
-At every recursive call, before exploring further, the current accumulated
-cost is compared against `bestSteps`. If the current path can no longer beat
-the best solution found so far, the branch is discarded immediately — this
-is the "bound" step that distinguishes the algorithm. Whenever a path reaches
-the exit with a lower cost than `bestSteps`, `bestSteps` and `bestWay` are
-updated, tightening the bound for every branch explored afterward. A `visited`
-matrix is kept alongside `way`so that membership checks (has this tile 
-already been used in the current path?) run in constant time instead of 
-requiring a scan of the stack.
+- Tiempo en el peor caso: `O(3^(M*N))`.
+- Espacio auxiliar: `O(M*N)` por `visited`, las pilas de rutas y la recursion.
 
-**Complexity**
+En ambos casos, `M` es el numero de filas y `N` el de columnas. Las funciones
+tambien incluyen su complejidad en los comentarios del codigo.
 
-Let `M` = number of rows and `N` = number of columns.
+> **Nota sobre la misma complejidad:** aunque Ramificacion y Poda suele ser
+> mas rapida en la practica porque descarta rutas cuyo costo ya no puede
+> mejorar la mejor solucion encontrada, en el peor caso puede tardar en hallar
+> esa primera solucion o enfrentar muchas rutas de costo similar. Entonces la
+> poda casi no reduce las exploraciones y ambas tecnicas conservan la cota
+> exponencial `O(3^(M*N))`.
 
-- **Time: `O(3^{M×N})`** in the worst case. From any tile, one of the four
-  directions always leads back to the tile just visited, which `visited`
-  blocks, leaving an effective branching factor of 3. The deepest a path can
-  go without repeating a tile is `M×N` (the whole maze). This bound is only
-  reached in the worst case, before any full path has been found and the
-  cost comparison has something to prune against — once a solution exists,
-  later branches are cut earlier, and `visited` also prevents revisiting
-  any tile already used earlier in the current path, not just the
-  immediately previous one, so real execution is typically much smaller than
-  this bound.
-- **Space: `O(M×N)`.** Passing the maze by reference avoids copying it at
-  every recursive call. What remains are the recursion stack (depth up to
-  `M×N`, constant space per frame), the `visited` matrix (`O(M×N)`), and the
-  `way` / `bestWay` stacks (each up to `O(M×N)` coordinates) — all of the
-  same order, so the total stays `O(M×N)`.
+## Formato de entradaPropósito
+
+Poner en práctica la técnica de programación de "backtracking" y la de "ramificación y poda"
+Instrucciones
+
+Investiga sobre el uso de backtracking y poda para aplicaciones de laberintos.
+
+Utilizando la técnica de programación de "backtracking" y/o la de "ramificación y poda", escribe en C++ un programa que resuelva un laberinto.
+
+El programa recibe dos números enteros M y N, seguido de M líneas de N valores booleanos(0|1) separados por un espacio, por la entrada estándar que representan el laberinto. Un 1 representa una casilla en la que es posible moverse, un 0 es una casilla por la que NO se puede pasar. 
+El origen o casilla de inicio es siempre la casilla (0,0) y la salida o meta es siempre la casilla (M-1, N-1).
+
+La salida del programa es una matriz de valores booleanos (0|1) que representan el camino para salir del laberinto. Mostrar la solución utilizando la técnica de backtracking, o utilizando la técnica de ramificación y poda. Especifica cuál de las dos estás utilizando.
+
+Muestra en pantalla el laberinto inicial y después las soluciones encontradas.
+
+Ejemplo de entrada:
+4
+4
+1 0 0 0
+1 1 0 1
+0 1 0 0
+1 1 1 1
+
+Ejemplo de salida:
+
+Backtracking
+1 0 0 0
+1 1 0 0
+0 1 0 0
+0 1 1 1
+
+Ramificación y poda
+1 0 0 0
+1 1 0 0
+0 1 0 0
+0 1 1 1
+
+Algunos ejemplos y consideraciones:
+
+    Casos_prueba_Back_Poda.txtDescargar Casos_prueba_Back_Poda.txt
+    Backtracking_0.txtDescargar Backtracking_0.txt
+    Backtracking_1.txtDescargar Backtracking_1.txt
+    Backtracking_2.txtDescargar Backtracking_2.txt
+    En los ejemplos: señalar error en caso de que se ingresen datos diferentes a los enteros positivos M y N, y a los valores booleanos, según corresponda.
+    Indica en los comentarios, el criterio de avance, ejemplo: hacia el frente y hacia abajo, etc. 
+
+ 
+
+Sube un archivo ZIP que se llame A18_Backtracking_Equipo_XX (donde las XX se sustituyen por el número de equipo correspondiente a los integrantes del equipo).
+     El archivo ZIP contiene una carpeta (folder) llamada <A18_Backtracking_Equipo_XX>, y dentro se encuentra el archivo "main.cpp"
+     Es posible tener más archivos dentro de la carpeta.
+Evaluación
+
+Tu programa debe compilar sin errores ni warnings.
+
+Piensa en posibles casos de prueba extremos que pueden ser utilizados para probar tu programa.
+
+Tu solución propuesta debe ser correcta y eficiente.
+
+Para obtener el 100% de los puntos de esta actividad, tu programa:
+
+    80% - Lista de 4 casos de prueba para cada una de las funcionalidades donde para cada una se evaluará:
+        Excelente (80%) - evalúa correctamente los 4 casos de prueba.
+        Muy Bien (60%) - evalúa correctamente 3 casos de prueba.
+        Bien (40%) - evalúa correctamente 2 casos de prueba
+        Insuficiente (20%) - evalúa correctamente 1 o 0 casos de prueba.
+
+    10% - El código deberá seguir los lineamientos estipulados en el estándar de codificaciónDescargar estándar de codificación.
+    10% - Especifican en cada uno de las funcionalidades la complejidad computacional como parte de su documentación.
 
 
-
-## How to compile and run from CMD
-
-Open Command Prompt and move to the project folder. Then run the following
-commands:
-
-Compile the program:
-```cmd
-g++ main.cpp -o maze.exe
+```text
+M N
+v11 v12 ... v1N
+...
+vM1 vM2 ... vMN
 ```
 
-Run one test case:
+`M` y `N` deben ser enteros positivos; cada valor del laberinto debe ser `0`
+o `1`. El programa reporta un error ante dimensiones, valores o entrada
+incompleta invalidos.
+
+## Compilar y ejecutar
+
+En Windows (CMD):
 
 ```cmd
+g++ main.cpp -o maze.exe
 maze.exe < input\input1.txt
 ```
 
-Run all test cases:
+En Bash:
 
-```cmd
-for %f in (input\*.txt) do maze.exe < %f
-```
-
-## How to compile and run from Bash
-
-Open a terminal and move to the project folder. Then run the following
-commands:
-
-Compile the program:
 ```bash
 g++ main.cpp -o maze
-```
-
-Run one test case:
-
-```bash
 ./maze < input/input1.txt
 ```
 
-Run all test cases:
+## Casos de prueba
 
-```bash
-for f in input/*.txt; do ./maze < "$f"; done
-```
+Se incluyen cuatro casos funcionales en la carpeta `input/`. Para cada uno se
+debe comprobar que el camino impreso inicia en `(0,0)`, termina en `(M-1,N-1)`,
+solo usa celdas con valor `1` y avanza ortogonalmente.
 
-## Input format
+| Archivo | Caso que cubre | Resultado esperado |
+| --- | --- | --- |
+| `input1.txt` | Ruta con desvio por paredes | Ambas tecnicas encuentran una ruta valida. |
+| `input2.txt` | Laberinto 6x6 con varias bifurcaciones | Ambas tecnicas encuentran una ruta valida; ramificacion y poda devuelve una ruta mas corta. |
+| `input3.txt` | No existe conexion entre origen y meta | Ambas tecnicas muestran `NO VALID SOLUTION`. |
+| `input4.txt` | Laberinto rectangular 7x9 con obstaculos | Ambas tecnicas encuentran una ruta valida. |
 
-Each input file contains, in order:
-
-1. The number of rows.
-2. The number of columns.
-3. One line per row, with the row's values (`0` or `1`) separated by
-   spaces.
-
-`main.cpp` reads these values, builds the maze, and passes it to
-`branchBound::travelMaze`, which returns the traversed path as a grid of
-the same size where `1` marks a tile used in the best path found and `0`
-marks tiles that are not part of it. If no path exists, the result is
-`{{-1}}` and the program reports that no valid solution was found.
-
-## Test case
-
-Input (4 rows, 5 columns):
+Pruebas adicionales recomendadas para la validacion de entrada:
 
 ```text
-4
-5
-1 0 1 1 1
-1 1 1 0 1
-1 0 1 1 1
-1 1 1 0 1
+0 2
 ```
 
-This test case was built to require a detour around two separate walls
-(the `0` in the first column below the origin and the `0`s in the fourth
-column) while still leaving exactly one route from `[0][0]` to `[3][4]`,
-so the resulting path is easy to verify by inspection against the printed
-"Original" maze.
-
-Result obtained with Branch and Bound:
+Debe indicar que las dimensiones deben ser positivas.
 
 ```text
-1 0 0 0 0
-1 1 1 0 0
-0 0 1 1 1
-0 0 0 0 1
+2 2
+1 2
+1 1
 ```
 
-| Test case | Rows | Columns | Branch and Bound | Backtracking |
-| --- | ---: | ---: | ---: | --- |
-| `input1.txt` | 4 | 5 | `[Insert image here]` | `[Insert image here]` |
- 
+Debe indicar que los valores del laberinto deben ser `0` o `1`.
+
+## Estructura
+
+- `main.cpp`: lee, valida e imprime el laberinto y los resultados.
+- `backtracking.h`: implementacion de Backtracking.
+- `branchBound.h`: implementacion de Ramificacion y Poda.
+- `input/`: los cuatro casos de prueba funcionales.
