@@ -7,6 +7,8 @@ hexadecimal key.
 The input files are located in [`tests/`](tests/). The program expects the
 filename without the `.txt` extension and a number of columns `n`.
 
+<br>
+
 ## How the algorithm works
 
 Let:
@@ -26,6 +28,8 @@ The `Hash` class performs these steps:
 3. `convertToHex()` writes each of the `n` sums as two hexadecimal digits,
    producing a key with `2n` characters.
 
+<br>
+
 ## Complexity of the algorithm only
 
 This section excludes `printMatrix()`, `printArray()`, and the other console
@@ -42,6 +46,8 @@ Because `r = ceil(m / n)`, the matrix contains `rn` cells and `m ≤ rn < m+n`
 for non-empty input. Therefore, the total can also be written as `O(m+n)`.
 Since this program restricts `n` to the constant range `16`–`64`, its algorithm
 is linear in the input size: `O(m)` time and `O(m)` space.
+
+<br>
 
 ## Complexity of the complete program
 
@@ -67,6 +73,8 @@ the peak memory is dominated by `fileContent`, the copied text in `Hash`, the
 matrix, and the sum/key structures. With `n` bounded to `16`–`64`, both totals
 are also `O(m)`.
 
+<br>
+
 ## Compilation
 
 Run these commands from the `Hash` directory. With g++ compatible compiler. The program was tested with std=c++17
@@ -77,6 +85,8 @@ g++ main.cpp -o hash.exe
 
 The source includes `hash.h` and `printer.h`, so no additional source files
 need to be listed in the compile command.
+
+<br>
 
 ## Execution
 
@@ -92,6 +102,7 @@ For example, enter:
 caso1
 16
 ```
+<br>
 
 ## Expected versus actual results
 
