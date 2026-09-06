@@ -1,0 +1,5 @@
+Esto es un ejemplo de contenido para el archivo datos.txt.
+Puedes escribir lo que quieras aquí y el programa calculará su hash.
+¡Hola, mundo!
+1234567890
+@#%^&*()

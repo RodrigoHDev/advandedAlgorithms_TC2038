@@ -22,6 +22,8 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <iomanip>
+#include <sstream>
 #include "printer.h"
 
 using namespace std;
@@ -43,7 +45,7 @@ class Hash{
 
     /**
      * Builds a Hash object over the given text with n columns.
-     * Complexity: O(1) time and O(1) auxiliary space (text is stored by value).
+     * Complexity: O(m) time and O(m) auxiliary space, where m is the length of the text.
      */
     Hash(string text_, int n_){
         text = text_;
@@ -57,24 +59,24 @@ class Hash{
      * a new key based on text and n.
      * 
      * Complexity: 
-     *   Time:  TODO: Complete here
-     *   Space: TODO: Complete here
+     *   Time:  O(rows*n)
+     *   Space: O(rows*n)
      * (dominated by assembleMatrix).
      * 
      * Parameters: None
      * Returns: the key of the given text.
      */
     string obtainKey(){
-        
-        vector<int> sum (n);
-        vector<vector <char>> matrix = assembleMatrix();
+        vector<vector<char>> matrix = assembleMatrix();
         vector<int> sum = addColumns(matrix);
 
         printMatrix(matrix);
         printer.printArray(sum);
-
-        return "";
         
+        string key = convertToHex(sum);
+        cout<<key<<endl;
+        
+        return key;
     }
 
     /**
@@ -91,7 +93,7 @@ class Hash{
      *  inside a structure of n columns.
      * Returns: none
      */
-    void printMatrix(vector<vector<char>> matrix){
+    void printMatrix(vector<vector<char>>& matrix){
         for(int i = 0; i < matrix.size(); i++){
             for(int j = 0; j < matrix[0].size(); j++){
                 cout<<matrix[i][j]<<" ";
@@ -104,7 +106,7 @@ class Hash{
     /**
      * assebleMatrix()
      * Lays text out into a matrix of n columns (row-major, left to right,
-     * top to bottom). Any cell beyond the length of text is padded with '['.
+     * top to bottom).
      * 
      * Complexity: 
      *  Time: O(rows*n) 
@@ -120,12 +122,12 @@ class Hash{
         
         for(int i = 0; i < matrix.size(); i++){
             for(int j = 0; j < matrix[0].size(); j++){
-                if(counter <= text.length()){
+                if(counter < text.length()){
                     matrix[i][j] = text[counter];
                     counter ++;
                 }
                 else{
-                    matrix[i][j] = '[';
+                    matrix[i][j] = n;
                 }
             }
         }
@@ -136,8 +138,6 @@ class Hash{
     /**
      * addColumns()
      * Sums each column of the matrix into a single value modulo 256.
-     * '-' characters count as 10 and '[' padding characters count as n;
-     * every other character contributes its ASCII value.
      * 
      * Complexity: 
      *  Time: O(rows*n) 
@@ -150,26 +150,43 @@ class Hash{
      * a vector with the addition and module of the respective characters of
      * each column.
      */
-    vector<int> addColumns(vector<vector<char>> matrix){
+    vector<int> addColumns(vector<vector<char>>& matrix){
         vector<int> sum(n);
 
         for(int i = 0; i<sum.size(); i++){
             for(int row = 0; row < matrix.size(); row++){
-                if(matrix[row][i] == '-'){
-                    sum[i] += 10;
-                }
-                else if(matrix[row][i] == '['){
-                    sum[i] += n;
-                }
-                else{
-                    sum[i] += matrix[row][i];
-                }
+                sum[i] += matrix[row][i];
             }
             sum[i] = sum[i]%256;
         }
 
         return sum;
     }
+
+    /**
+     * convertToHex()
+     * Converts the given vector of integers to a string of hexadecimal
+     * representation, two digits per integer.
+     * 
+     * Complexity: 
+     *  Time: O(n) 
+     *  Space: O(n) 
+     * 
+     * Params: 
+     * sum is a vector with the addition and module of the respective characters of
+     * each column.
+     * Returns:
+     * a string with the hexadecimal representation of the given vector.
+    */
+    string convertToHex(vector<int>& sum){
+        stringstream result;
+
+        for(int i = 0; i < sum.size(); i++){
+            result<<uppercase<<hex<<setw(2)<<setfill('0')<<sum[i];
+        }
+
+        return result.str();
+    }    
 
 };
 
