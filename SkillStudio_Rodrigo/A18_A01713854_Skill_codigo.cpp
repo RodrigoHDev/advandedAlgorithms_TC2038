@@ -398,6 +398,7 @@ int main() {
 	for (int i = 0; i < (int) solver.bestPath.size(); i++) {
 		cout << get<2>(solver.bestPath[i]) + 1 << " ";
 	}
+     cout <<""<< endl;
 
 	return 0;
 }
