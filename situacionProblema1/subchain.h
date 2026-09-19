@@ -1,8 +1,13 @@
 /*
- * Title: 
+ * Title: subchain.h
  *
  * Description:
-
+ * Creation of Subchain object to search for malicious code inside transmission files under the conditions:
+ * - Each transmission and each malicious code (mcode) is stored in a .txt file, referenced by its name (without extension).
+ * - Transmission files are read from the "transmission/" folder and mcode files from the "mcode/" folder.
+ * - Line breaks ('\r' and '\n') are ignored when reading a file, so the content is treated as a single string.
+ * - Every mcode is searched in every transmission using the Z-function algorithm over the string mcode + '$' + transmission.
+ * - For each search, all the occurrences are reported as a pair (start, end), where end is exclusive: [start, end).
  *
  * Implementation for the subject- Analysis and Design of Advanced
  * Algorithms
@@ -27,9 +32,13 @@
 using namespace std;
 
 /*
-In order to analyze complecity:
-rows = ceil(text.length() / n).
-n = number determined by the user.
+In order to analyze complexity:
+t = number of transmission files.
+m = number of malicious code files.
+T = length of a transmission file (characters, without line breaks).
+M = length of a malicious code file (characters, without line breaks).
+n = M + T + 1 = length of the chain mcode + '$' + transmission.
+k = number of occurrences found in a search.
 */
 
 class Subchain{
@@ -38,21 +47,65 @@ class Subchain{
      vector<string> mcode;
      
      public:
+
+     /**
+      * Subchain()
+      * Default constructor. Creates a Subchain object with no files to analyze.
+      * 
+      * Complexity: 
+      *  Time: O(1) 
+      *  Space: O(1)
+      * 
+      * Params: none
+      * Returns: none
+      */
      Subchain(){};
 
+     /**
+      * Subchain()
+      * Builds a Subchain object with the names of the transmission files and
+      * the names of the malicious code files to analyze.
+      * 
+      * Complexity: 
+      *  Time: O(t + m) copies of the names (proportional to the total length of the names)
+      *  Space: O(t + m) 
+      * 
+      * Params: 
+      * transmission_ is a vector of strings with the names (without .txt) of the
+      *  transmission files.
+      * mcode_ is a vector of strings with the names (without .txt) of the
+      *  malicious code files.
+      * Returns: none
+      */
      Subchain(vector<string> transmission_, vector<string> mcode_){
           transmission = transmission_;
           mcode = mcode_;
      }
 
+     /**
+      * runSequence()
+      * Searches every malicious code in every transmission and prints, for each
+      * pair, whether the code appears and, if so, the start and end position
+      * of every occurrence.
+      * 
+      * Complexity: 
+      *  Time: O(t * m * (T + M)) since search() is called once per pair and
+      *        each call re-reads both files. Printing the results adds O(k) per pair.
+      *  Space: O(T + M + k) (dominated by the chain built inside search).
+      * 
+      * Params: none
+      * Returns: none
+      */
      void runSequence(){
           for(int t = 0; t < transmission.size(); t++){
                for (int c = 0; c < mcode.size(); c++){
                     cout<<"Transmission: "<<transmission[t]<<" Malicious Code: "<<mcode[c]<<endl;
                     vector<tuple<int,int>> positions = search(transmission[t],mcode[c]);
+                    // No occurrences found (or a file could not be read)
                     if(positions.size() == 0){
                          cout <<"false. No appearance of mcode "<<mcode[c]<<" in file "<<transmission[t]<<endl;
                     }
+                    // Print every occurrence as [Start, End)
                     else{
                          cout <<"true. Appearance of mcode "<<mcode[c]<<" in file "<<transmission[t]<<" at: "<<endl;
                          for(int p = 0; p < positions.size(); p++){
@@ -64,6 +117,22 @@ class Subchain{
           }
      }
 
+     /**
+      * zFunction()
+      * Computes the Z-array of a string. z[i] is the length of the longest
+      * substring starting at i that is also a prefix of s. Uses a Z-box [l, r]
+      * to reuse previously computed values instead of comparing from scratch.
+      * 
+      * Complexity: 
+      *  Time: O(n) (each character is compared at most twice: once extending
+      *        a Z-box and once when it is reused)
+      *  Space: O(n) 
+      * 
+      * Params: 
+      * s is the string to analyze (in this class, mcode + '$' + transmission).
+      * Returns:
+      * a vector of integers with the Z-array of s. z[0] is left as 0.
+      */
      vector<int> zFunction(string &s) {
           int n = s.length();
           vector<int> z(n);
@@ -90,7 +159,25 @@ class Subchain{
      }
 
 
-     // Function to find all occurrences of pattern in text
+     /**
+      * search()
+      * Finds all the occurrences of a malicious code inside a transmission.
+      * Reads both files, builds the chain mcode + '$' + transmission and looks
+      * for every position where the Z-value equals the length of the mcode.
+      * 
+      * Complexity: 
+      *  Time: O(T + M) (reading the files, building the chain, zFunction and
+      *        the final scan are all linear in n = M + T + 1)
+      *  Space: O(T + M + k) (the chain, the Z-array and the k stored positions)
+      * 
+      * Params: 
+      * fileNameTransmission is the name (without .txt) of the transmission file.
+      * fileNameCode is the name (without .txt) of the malicious code file.
+      * Returns:
+      * a vector of tuples (start, end) with the position of every occurrence
+      * in the transmission, where end is exclusive. The vector is empty if
+      * there are no occurrences or if any file is empty or cannot be opened.
+      */
      vector<tuple<int,int>> search(string fileNameTransmission, string fileNameCode) {
           vector<tuple<int,int>> pos;
           string transmission = getFile(fileNameTransmission, "transmission");
@@ -98,10 +185,12 @@ class Subchain{
           if(transmission == "" || mcode == ""){
                return pos;
           }
+          // '$' separates the pattern from the text so no Z-value exceeds the size of mcode
           string chain = mcode + '$' + transmission;
           vector<int> zIndex = zFunction(chain);
           int size = mcode.size();
 
+          // Only the part of the chain that belongs to the transmission is checked
           for (int i = size + 1; i < zIndex.size(); i++) {
                if (zIndex[i] == size){
                     // pattern match starts here in text
@@ -114,7 +203,23 @@ class Subchain{
      }
 
      
-     /*Auxiliar function getFile*/
+     /**
+      * getFile()
+      * Auxiliar function. Reads a .txt file and returns its content as a single
+      * string, ignoring the line breaks ('\r' and '\n').
+      * 
+      * Complexity: 
+      *  Time: O(L) where L is the number of characters in the file
+      *  Space: O(L) 
+      * 
+      * Params: 
+      * name is the name of the file, without the .txt extension.
+      * type is "transmission" to read from the "transmission/" folder; any other
+      *  value reads from the "mcode/" folder.
+      * Returns:
+      * a string with the content of the file without line breaks. If the file
+      * cannot be opened, prints an error message and returns an empty string.
+      */
      string getFile(string name, string type){
           string path;
           if(type == "transmission"){
@@ -131,6 +236,7 @@ class Subchain{
           }
           string fileContent = "";
           char c;
+          // Copy every character except line breaks
           while(file.get(c)){
                if(c != '\r' && c != '\n'){
                     fileContent += c;
