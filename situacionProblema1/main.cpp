@@ -103,26 +103,37 @@ int main() {
 		mcodes.push_back(getFile(path));
 	}
 
-	// Part 1: search every mcode inside every transmission and display the result.
-	// If the mcode is found, every occurrence is displayed after true.
-	cout << "\nSUBCHAIN TEST\n";
 
-	Subchain subchain;
-	for (const string &transmission : transmissions) {
-		for (const string &mcode : mcodes) {
-			vector<int> positions = subchain.search(transmission, mcode);
-			if (positions.empty()) {
-				cout << "false" << endl;
-			} else {
-				cout << "true";
-				for (int position : positions) {
-					// Positions are zero-based, the output is one-based
-					cout << " " << position + 1;
-				}
-				cout << endl;
-			}
-		}
-	}
+
+     // Start of the program
+     cout << "ADVANCED ALGORITHMS - SITUATION PROBLEM 1\n";
+     cout << "ANAYZING TRANSMISSIONS AND MALICIOUS CODE IN FILES...\n";
+
+
+     // Part 1: Search for every mcode inside every transmission and display the result
+     // If the mcode is found, every occurrence is displayed after true.
+     cout << "\nPART 1:SUBCHAIN TEST\n";
+
+     Subchain subchain;
+
+     for(int t = 0; t < transmissions.size(); t++){
+          cout << "\nT R A N S M I S S I O N " << t + 1 << "\n\n";
+
+          for(int m = 0; m < mcodes.size(); m++){
+               cout << "mcode " << m + 1 << endl;
+
+               vector<int> positions = subchain.search(transmissions[t], mcodes[m]);
+
+               if(positions.empty()){
+                    cout << "(false) Chain not found in the transmission\n\n";
+               } else {
+                    for(int position : positions){
+                         cout << "(true) Initial position: " << position + 1 << " Final position: " << position + mcodes[m].length() << endl;
+                    }
+                    cout << endl;
+               }
+          }
+     }
 
 	// Part 2: search the longest palindrome inside every transmission and display the result.
 	// If a palindrome is found, its start and end indexes are displayed.
