@@ -93,19 +93,23 @@ int main(){
 
 
      // Part 1: Search for every mcode inside every transmission and display the result
-     // If the mcode is found, the position is displayed as true followed by the index of the first character.
+     // If the mcode is found, every occurrence is displayed after true.
      cout << "\nPRUEBA DE SUBCADENAS\n";
 
 
      Subchain subchain;
      for(const string &transmission : transmissions){
           for(const string &mcode : mcodes){
-               int position = subchain.search(transmission, mcode);
-               if(position == -1){
+               vector<int> positions = subchain.search(transmission, mcode);
+               if(positions.empty()){
                     cout << "false" << endl;
                }
                else{
-                    cout << "true " << position + 1 << endl;
+                    cout << "true";
+                    for(int position : positions){
+                         cout << " " << position + 1;
+                    }
+                    cout << endl;
                }
           }
      }

@@ -75,39 +75,40 @@ class Subchain{
 
      /**
       * search()
-      * Finds the first occurrence of a malicious code inside a transmission.
-      * Builds the chain mcode + '$' + transmission and returns the first
-      * position where the Z-value equals the length of the mcode.
+      * Finds all the occurrences of a malicious code inside a transmission.
+      * Builds the chain mcode + '$' + transmission and stores every position
+      * where the Z-value equals the length of the mcode.
       *
       * Complexity:
       *  Time: O(T + M) (building the chain, zFunction and the final scan are
       *        all linear in n)
-      *  Space: O(T + M) (the chain and the Z-array)
+      *  Space: O(T + M + k) (the chain, the Z-array and the positions found)
       *
       * Params:
       * transmission is the content of a transmission file without line breaks.
       * mcode is the content of a malicious code file without line breaks.
       * Returns:
-      * the zero-based position of the first occurrence in transmission, or -1
-      * if mcode is empty or does not appear in transmission.
+      * a vector with the zero-based positions of every occurrence in
+      * transmission. The vector is empty if mcode is empty or does not appear.
       */
-     int search(const string &transmission, const string &mcode) const {
+     vector<int> search(const string &transmission, const string &mcode) const {
+          vector<int> positions;
           if(transmission.empty() || mcode.empty()){
-               return -1;
+               return positions;
           }
 
           // '$' separates the pattern from the text because it is not a valid input character
           string chain = mcode + '$' + transmission;
           vector<int> zIndex = zFunction(chain);
-          int size = static_cast<int>(mcode.length());
+          int size = mcode.length();
 
           // Only the part of the chain that belongs to the transmission is checked
-          for(int i = size + 1; i < static_cast<int>(zIndex.size()); i++){
+          for(int i = size + 1; i < zIndex.size(); i++){
                if(zIndex[i] == size){
-                    return i - size - 1;
+                    positions.push_back(i - size - 1);
                }
           }
-          return -1;
+          return positions;
      }
 };
 
