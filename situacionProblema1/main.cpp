@@ -107,8 +107,8 @@ int main(){
           }
      }
      for(const string &transmission : transmissions){
-          subchain.palindrome(transmission);
+          tuple<int,int> position = subchain.palindrome(transmission);
+          cout<<"Longest Polindrom at start: "<<get<0>(position)<<" end: "<<get<1>(position)<<endl;
      }
-
      return 0;
 }

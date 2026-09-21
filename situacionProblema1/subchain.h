@@ -116,30 +116,32 @@ class Subchain{
 
      tuple<int,int> palindrome(const string &transmission) const {
           string chain = expandedChain(transmission);
-          cout<<chain<<endl;
+          // cout<<chain<<endl;
           vector<int> palindromeIndex = searchPalindrome(chain);
 
-          for(int i = 0; i<palindromeIndex.size(); i++){
-               cout<<palindromeIndex[i]<<" ";
-          }
-          cout<<" "<<endl;
+          // for(int i = 0; i<palindromeIndex.size(); i++){
+          //      cout<<palindromeIndex[i]<<" ";
+          // }
+          // cout<<" "<<endl;
 
           int maxPalindromePosition = -1;
           int maxPalindromeValue = -1;
           for(int i = 0; i < palindromeIndex.size(); i++){
-               if(palindromeIndex[i] > maxPalindromeValue){
+               if(palindromeIndex[i] >= maxPalindromeValue){
                     maxPalindromePosition = i;
                     maxPalindromeValue = palindromeIndex[i];
                }
           }
-          tuple<int,int> response = {maxPalindromePosition-maxPalindromeValue, maxPalindromePosition+maxPalindromeValue};
+          int start = (maxPalindromePosition-maxPalindromeValue)/2;
+          tuple<int,int> response = {start, start+maxPalindromeValue-1};
           return response;
      }
 
      string expandedChain(const string &transmission) const{
           string chain = "|";
-          for(int i = 0; i<transmission.length(); i++){
-               chain+=transmission[i]+"|";
+          for (char c : transmission) {
+               chain += c;
+               chain += '|';
           }
           return chain;
      }
@@ -155,8 +157,8 @@ class Subchain{
                     palindrome[i] = min(right-i, palindrome[iMirror]);
                }
                // Addition to palindrome number from the i index.
-               while(palindrome[i+1+chain[i]] == palindrome[i-1-chain[i]]){
-                    palindrome[i] += 1;
+               while((i+1+palindrome[i] < (int)chain.length()) && (i-1-palindrome[i] >= 0) &&chain[i+1+palindrome[i]] == chain[i-1-palindrome[i]]){
+                    palindrome[i] ++;
                }
                // Modification of range based on greater analyzed palindrome
                if(i+palindrome[i] > right){
