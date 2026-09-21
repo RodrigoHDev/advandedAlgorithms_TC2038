@@ -92,22 +92,31 @@ int main(){
      }
 
 
+
+     // Start of the program
+     cout << "ADVANCED ALGORITHMS - SITUATION PROBLEM 1\n";
+     cout << "ANAYZING TRANSMISSIONS AND MALICIOUS CODE IN FILES...\n";
+
+
      // Part 1: Search for every mcode inside every transmission and display the result
      // If the mcode is found, every occurrence is displayed after true.
-     cout << "\nPRUEBA DE SUBCADENAS\n";
-
+     cout << "\nPART 1:SUBCHAIN TEST\n";
 
      Subchain subchain;
-     for(const string &transmission : transmissions){
-          for(const string &mcode : mcodes){
-               vector<int> positions = subchain.search(transmission, mcode);
+
+     for(int t = 0; t < transmissions.size(); t++){
+          cout << "\nT R A N S M I S S I O N " << t + 1 << "\n\n";
+
+          for(int m = 0; m < mcodes.size(); m++){
+               cout << "mcode " << m + 1 << endl;
+
+               vector<int> positions = subchain.search(transmissions[t], mcodes[m]);
+
                if(positions.empty()){
-                    cout << "false" << endl;
-               }
-               else{
-                    cout << "true";
+                    cout << "(false) Chain not found in the transmission\n\n";
+               } else {
                     for(int position : positions){
-                         cout << " " << position + 1;
+                         cout << "(true) Initial position: " << position + 1 << " Final position: " << position + mcodes[m].length() << endl;
                     }
                     cout << endl;
                }
@@ -117,7 +126,7 @@ int main(){
 
      
      // Part 3: Search for the longest common substring between two trasmissions and display the result
-     cout << "\nPRUEBA DE SUBCADENAS COMUNES\n";
+     cout << "\nPART 3: TRANSMISSION SIMILARITY TEST\n\n";
      
      
      Substring substring;
@@ -125,7 +134,7 @@ int main(){
      if(result.first == -1){
           cout << "No common substring found." << endl;
      } else {
-          cout << result.first + 1 << " " << result.second + 1 << endl;
+          cout << "LONGEST COMMON SUBSTRING found at: " << result.first + 1 << " - " << result.second + 1 << endl;
      }
 
      return 0;

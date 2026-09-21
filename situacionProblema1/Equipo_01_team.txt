@@ -1,0 +1,7 @@
+R: Rodrigo Alejandro Hurtado Cortes - A01713854
+A: Alexis Yaocalli Berthou Haas - A01713458
+
+Part 1 - R
+Part 2 - R
+Part 3 - A
+Output formatting - A
