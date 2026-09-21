@@ -112,7 +112,7 @@ int main() {
 
      // Part 1: Search for every mcode inside every transmission and display the result
      // If the mcode is found, every occurrence is displayed after true.
-     cout << "\nPART 1:SUBCHAIN TEST\n";
+     cout << "\nP A R T 1 :S U B C H A I N    T E S T\n";
 
      Subchain subchain;
 
@@ -137,11 +137,13 @@ int main() {
 
 	// Part 2: search the longest palindrome inside every transmission and display the result.
 	// If a palindrome is found, its start and end indexes are displayed.
-	cout << "\nPALINDROME TEST\n";
+	cout << "\nP A R T  2:  P A L I N D R O M E   T E S T\n";
 
 	Palindrome palindrome;
-	for (const string &transmission : transmissions) {
-		tuple<int,int> position = palindrome.palindrome(transmission);
+	for(int t = 0; t < transmissions.size(); t++){
+		cout << "\nT R A N S M I S S I O N " << t + 1 << "\n\n";
+
+		tuple<int,int> position = palindrome.palindrome(transmissions[t]);
 		// An end index of -1 means the transmission is empty, so there is no palindrome
 		if (get<1>(position) == -1) {
 			cout << "No poligon found." << endl;
@@ -152,7 +154,7 @@ int main() {
 
 	// Part 3: search the longest common substring between the two transmissions and display the result.
 	// If it exists, its start and end positions are displayed.
-	cout << "\nLONGEST COMMON SUBSTRING TEST\n";
+	cout << "\nP A R T  3: L O N G E S T   C O M M O N   S U B S T R I N G    T E S T\n\n";
 
 	Substring substring;
 	pair<int, int> result = substring.search(transmissions[0], transmissions[1]);
@@ -160,8 +162,9 @@ int main() {
 		cout << "No common substring found." << endl;
 	} else {
 		// Indexes are zero-based, the output is one-based
-		cout << result.first + 1 << " " << result.second + 1 << endl;
+		cout <<"Longest common substring between transmissions. Start: "<< result.first + 1 << " End: " << result.second + 1 << endl;
 	}
+	cout<<" "<<endl;
 
 	return 0;
 }
