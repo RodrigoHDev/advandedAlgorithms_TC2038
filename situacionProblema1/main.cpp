@@ -106,6 +106,9 @@ int main(){
                }
           }
      }
+     for(const string &transmission : transmissions){
+          subchain.palindrome(transmission);
+     }
 
      return 0;
 }

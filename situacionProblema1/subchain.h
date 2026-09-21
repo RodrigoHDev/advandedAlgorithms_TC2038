@@ -20,6 +20,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <tuple>
 
 using namespace std;
 
@@ -109,6 +110,62 @@ class Subchain{
           }
           return -1;
      }
+
+
+
+
+     tuple<int,int> palindrome(const string &transmission) const {
+          string chain = expandedChain(transmission);
+          cout<<chain<<endl;
+          vector<int> palindromeIndex = searchPalindrome(chain);
+
+          for(int i = 0; i<palindromeIndex.size(); i++){
+               cout<<palindromeIndex[i]<<" ";
+          }
+          cout<<" "<<endl;
+
+          int maxPalindromePosition = -1;
+          int maxPalindromeValue = -1;
+          for(int i = 0; i < palindromeIndex.size(); i++){
+               if(palindromeIndex[i] > maxPalindromeValue){
+                    maxPalindromePosition = i;
+                    maxPalindromeValue = palindromeIndex[i];
+               }
+          }
+          tuple<int,int> response = {maxPalindromePosition-maxPalindromeValue, maxPalindromePosition+maxPalindromeValue};
+          return response;
+     }
+
+     string expandedChain(const string &transmission) const{
+          string chain = "|";
+          for(int i = 0; i<transmission.length(); i++){
+               chain+=transmission[i]+"|";
+          }
+          return chain;
+     }
+
+     vector<int> searchPalindrome(string chain) const{
+          vector<int> palindrome(chain.length());
+          int center = 0;
+          int right = 0;
+          for(int i = 1; i < chain.length(); i++){
+               int iMirror = center - (i-center);
+               // Validation through mirror property of palindrome
+               if(right > i){
+                    palindrome[i] = min(right-i, palindrome[iMirror]);
+               }
+               // Addition to palindrome number from the i index.
+               while(palindrome[i+1+chain[i]] == palindrome[i-1-chain[i]]){
+                    palindrome[i] += 1;
+               }
+               // Modification of range based on greater analyzed palindrome
+               if(i+palindrome[i] > right){
+                    center = i;
+                    right = i+palindrome[i];
+               }
+          }
+          return palindrome;
+     };
 };
 
 #endif
