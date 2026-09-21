@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 #include "subchain.h"
+#include "substring.h"
 
 using namespace std;
 
@@ -93,7 +94,9 @@ int main(){
 
      // Part 1: Search for every mcode inside every transmission and display the result
      // If the mcode is found, the position is displayed as true followed by the index of the first character.
-     
+     cout << "\nPRUEBA DE SUBCADENAS\n";
+
+
      Subchain subchain;
      for(const string &transmission : transmissions){
           for(const string &mcode : mcodes){
@@ -105,6 +108,20 @@ int main(){
                     cout << "true " << position + 1 << endl;
                }
           }
+     }
+
+
+     
+     // Part 3: Search for the longest common substring between two trasmissions and display the result
+     cout << "\nPRUEBA DE SUBCADENAS COMUNES\n";
+     
+     
+     Substring substring;
+     pair<int, int> result = substring.search(transmissions[0], transmissions[1]);
+     if(result.first == -1){
+          cout << "No common substring found." << endl;
+     } else {
+          cout << result.first + 1 << " " << result.second + 1 << endl;
      }
 
      return 0;
