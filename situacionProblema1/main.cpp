@@ -2,11 +2,14 @@
  * Title: main.cpp
  *
  * Description:
- * Main program to analyze the fixed transmission and malicious code files.
- * - The five files are read automatically from their respective folders.
- * - Line breaks are ignored so each file is treated as a single string.
- * - Every mcode is searched inside every transmission.
- * - The output of this program corresponds to part 1 of the situation problem.
+ * Main program that runs the three analyses of the situation problem over the
+ * fixed transmission and malicious code files:
+ * - Part 1: searches every mcode inside every transmission (Subchain).
+ * - Part 2: finds the longest palindrome of every transmission (Palindrome).
+ * - Part 3: finds the longest common substring between the two transmissions
+ *   (Substring).
+ * The files are read automatically from their respective folders and line
+ * breaks are ignored so each file is treated as a single string.
  *
  * Implementation for the subject - Analysis and Design of Advanced Algorithms
  *
@@ -17,8 +20,12 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <tuple>
+#include <utility>
 #include <vector>
 #include "subchain.h"
+#include "substring.h"
+#include "palindrome.h"
 
 using namespace std;
 
@@ -29,6 +36,7 @@ m = number of malicious code files.
 T = length of a transmission file (characters, without line breaks).
 M = length of a malicious code file (characters, without line breaks).
 L = length of the file being read.
+S = cost of Substring::search() over the two transmissions.
 */
 
 /**
@@ -46,69 +54,103 @@ L = length of the file being read.
  * a string with the content of the file without line breaks. It returns an
  * empty string if the file cannot be opened.
  */
-string getFile(const string &path){
-     ifstream file(path);
-     if(!file.is_open()){
-          return "";
-     }
+string getFile(const string &path) {
+	ifstream file(path);
+	if (!file.is_open()) {
+		return "";
+	}
 
-     string fileContent = "";
-     char c;
-     while(file.get(c)){
-          if(c != '\r' && c != '\n'){
-               fileContent += c;
-          }
-     }
-     file.close();
-     return fileContent;
+	string fileContent = "";
+	char currentChar = ' ';
+	while (file.get(currentChar)) {
+		if (currentChar != '\r' && currentChar != '\n') {
+			fileContent += currentChar;
+		}
+	}
+	file.close();
+	return fileContent;
 }
 
 /**
  * main()
  * Reads the fixed transmission and malicious code files, then displays the
- * required result for every transmission and mcode pair.
+ * result of each part: the mcode search for every transmission and mcode
+ * pair, the longest palindrome of every transmission and the longest common
+ * substring between the two transmissions.
  *
  * Complexity:
- *  Time: O(t * m * (T + M)) since Subchain::search() is called once per pair.
- *  Space: O(T + M) (dominated by the chain built inside Subchain::search()).
+ *  Time: O(t * m * (T + M) + t * T + S) since Subchain::search() is called
+ *        once per pair, Palindrome::palindrome() once per transmission and
+ *        Substring::search() once.
+ *  Space: O(T + M) (dominated by the chains built inside Subchain::search()
+ *         and Palindrome::palindrome(), plus the space used by Substring).
  *
  * Params: none
  * Returns: 0 when the program finishes.
  */
-int main(){
-     vector<string> transmissionPaths = {"transmission/transmission1.txt","transmission/transmission2.txt"};
-     vector<string> mcodePaths = {"mcode/mcode1.txt","mcode/mcode2.txt","mcode/mcode3.txt"};
+int main() {
+	vector<string> transmissionPaths = {"transmission/transmission1.txt", "transmission/transmission2.txt"};
+	vector<string> mcodePaths = {"mcode/mcode1.txt", "mcode/mcode2.txt", "mcode/mcode3.txt"};
 
-     vector<string> transmissions;
-     vector<string> mcodes;
+	vector<string> transmissions;
+	vector<string> mcodes;
 
-     for(const string &path : transmissionPaths){
-          transmissions.push_back(getFile(path));
-     }
+	for (const string &path : transmissionPaths) {
+		transmissions.push_back(getFile(path));
+	}
 
-     for(const string &path : mcodePaths){
-          mcodes.push_back(getFile(path));
-     }
+	for (const string &path : mcodePaths) {
+		mcodes.push_back(getFile(path));
+	}
 
+	// Part 1: search every mcode inside every transmission and display the result.
+	// If the mcode is found, every occurrence is displayed after true.
+	cout << "\nSUBCHAIN TEST\n";
 
-     // Part 1: Search for every mcode inside every transmission and display the result
-     // If the mcode is found, the position is displayed as true followed by the index of the first character.
-     
-     Subchain subchain;
-     for(const string &transmission : transmissions){
-          for(const string &mcode : mcodes){
-               int position = subchain.search(transmission, mcode);
-               if(position == -1){
-                    cout << "false" << endl;
-               }
-               else{
-                    cout << "true " << position + 1 << endl;
-               }
-          }
-     }
-     for(const string &transmission : transmissions){
-          tuple<int,int> position = subchain.palindrome(transmission);
-          cout<<"Longest Polindrom at start: "<<get<0>(position)<<" end: "<<get<1>(position)<<endl;
-     }
-     return 0;
+	Subchain subchain;
+	for (const string &transmission : transmissions) {
+		for (const string &mcode : mcodes) {
+			vector<int> positions = subchain.search(transmission, mcode);
+			if (positions.empty()) {
+				cout << "false" << endl;
+			} else {
+				cout << "true";
+				for (int position : positions) {
+					// Positions are zero-based, the output is one-based
+					cout << " " << position + 1;
+				}
+				cout << endl;
+			}
+		}
+	}
+
+	// Part 2: search the longest palindrome inside every transmission and display the result.
+	// If a palindrome is found, its start and end indexes are displayed.
+	cout << "\nPALINDROME TEST\n";
+
+	Palindrome palindrome;
+	for (const string &transmission : transmissions) {
+		tuple<int,int> position = palindrome.palindrome(transmission);
+		// An end index of -1 means the transmission is empty, so there is no palindrome
+		if (get<1>(position) == -1) {
+			cout << "No poligon found." << endl;
+		} else {
+			cout << "Longest Polindrom at start: " << get<0>(position) << " end: " << get<1>(position) << endl;
+		}
+	}
+
+	// Part 3: search the longest common substring between the two transmissions and display the result.
+	// If it exists, its start and end positions are displayed.
+	cout << "\nLONGEST COMMON SUBSTRING TEST\n";
+
+	Substring substring;
+	pair<int, int> result = substring.search(transmissions[0], transmissions[1]);
+	if (result.first == -1) {
+		cout << "No common substring found." << endl;
+	} else {
+		// Indexes are zero-based, the output is one-based
+		cout << result.first + 1 << " " << result.second + 1 << endl;
+	}
+
+	return 0;
 }
