@@ -100,6 +100,12 @@ To find the longest common substring between the two transmissions, the classic 
 - **Time complexity:** O(T1 · T2), where T1 and T2 are the lengths of the two transmissions, since a full matrix of that size is filled.
 - **Space complexity:** O(T1 · T2), for the full stored matrix.
 
+<br>
+<div align=center>
+<img width="700" height="auto" alt="SituacionProblema1 drawio" src="https://github.com/user-attachments/assets/6fd81457-8841-4873-9c70-f4ea4d8fb31a" />
+</div>
+<br>
+
 ## Testing strategy
 
 The program was tested using different provided versions of mcode and transmission files. In total, 9 mcode files and 6 transmission files were used across multiple test runs, combining them in different pairings to exercise Subchain, Palindrome and Substring against a variety of scenarios rather than a single fixed input.
