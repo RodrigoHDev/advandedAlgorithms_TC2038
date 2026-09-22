@@ -100,6 +100,18 @@ To find the longest common substring between the two transmissions, the classic 
 - **Time complexity:** O(T1 · T2), where T1 and T2 are the lengths of the two transmissions, since a full matrix of that size is filled.
 - **Space complexity:** O(T1 · T2), for the full stored matrix.
 
+## Testing strategy
+
+The program was tested using different provided versions of mcode and transmission files. In total, 9 mcode files and 6 transmission files were used across multiple test runs, combining them in different pairings to exercise Subchain, Palindrome and Substring against a variety of scenarios rather than a single fixed input.
+
+Beyond the provided cases, additional modified test files were built specifically to stress edge cases that are not guaranteed to appear in the standard test set:
+
+- Empty transmission: verifies that Subchain::search() and Palindrome::palindrome() handle a zero-length transmission without crashing or reading out of bounds, and that they report the expected "not found" / "no palindrome" behavior instead of a false positive.
+- Empty mcode: verifies that Subchain::search() treats an empty pattern as a non-match (rather than matching at every position, which would be the naive behavior of some substring-search implementations) and returns an empty result.
+- mcode longer than the transmission: verifies that Subchain::search() correctly returns no occurrences when M > T, since a pattern longer than the text it is being searched in can never be fully contained.
+
+For every test run, in addition to comparing the program's output against the expected true/false and position values, the reported palindrome positions were manually checked at the reported start/end indices and confirming by inspection that it reads the same forwards and backwards. This manual verification step was particularly important for Palindrome, since an off-by-one error in the index mapping from the expanded (Manacher) representation back to the original string would still produce a palindrome, just not necessarily the longest one — a class of bug that a purely automated true/false check would not catch.
+
 ## Additional options
 
 ### Subchain (subchain search)
@@ -128,3 +140,14 @@ In the imaginary context of the problem —detecting "mirrored" malicious code h
 The only stage that retains quadratic complexity, O(T1 · T2), is the similarity comparison between the two full transmissions (Part 3). This is acceptable given that this comparison is performed only once between exactly two files (unlike the other parts, which repeat for every transmission-mcode combination), and the simplicity of the dynamic programming approach makes it easier to verify and maintain. However, as detailed in the additional options section, if the volume of transmissions to compare grew — for example, if a real-world scenario required comparing many transmissions against each other to detect repeated suspicious behavior patterns — it would be worth migrating this stage toward a solution based on suffix arrays or suffix automata, trading implementation simplicity for scalability.
 
 Overall, the design balances the asymptotic efficiency needed for a real-time threat-detection scenario with code clarity and maintainability, leaving the door open for further optimizations (such as Aho-Corasick for multiple patterns, or suffix structures for large-scale comparisons) should the data volume of the problem grow beyond what was considered in this situation problem.
+
+## References
+ 
+Fuentes Valdéz, R. (n.d.). *M2_02 Strings: Z y Manacher* [Class slides]. Tecnológico de Monterrey, Campus Querétaro, TC2038 Análisis y diseño de Algoritmos A.
+ 
+Fuentes Valdéz, R. (n.d.). *M2_05 Strings: Subcadenas común y LCS* [Class slides]. Tecnológico de Monterrey, Campus Querétaro, TC2038 Análisis y diseño de Algoritmos A.
+ 
+GeeksforGeeks. (n.d.). *Z algorithm (linear time pattern searching algorithm)*. GeeksforGeeks. https://www.geeksforgeeks.org/dsa/z-algorithm-linear-time-pattern-searching-algorithm/
+ 
+GeeksforGeeks. (n.d.). *Manacher's algorithm – linear time longest palindromic substring – Part 1*. GeeksforGeeks. https://www.geeksforgeeks.org/dsa/manachers-algorithm-linear-time-longest-palindromic-substring-part-1/
+ 
