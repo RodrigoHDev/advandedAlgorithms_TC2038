@@ -23,6 +23,7 @@
 #include <tuple>
 #include <utility>
 #include <vector>
+
 #include "subchain.h"
 #include "substring.h"
 #include "palindrome.h"
@@ -90,7 +91,8 @@ string getFile(const string &path) {
  */
 int main() {
 	vector<string> transmissionPaths = {"transmission/transmission1.txt", "transmission/transmission2.txt"};
-	vector<string> mcodePaths = {"mcode/mcode1.txt", "mcode/mcode2.txt", "mcode/mcode3.txt"};
+	
+     vector<string> mcodePaths = {"mcode/mcode1.txt", "mcode/mcode2.txt", "mcode/mcode3.txt"};
 
 	vector<string> transmissions;
 	vector<string> mcodes;
@@ -107,25 +109,27 @@ int main() {
 
      // Start of the program
      cout << "ADVANCED ALGORITHMS - SITUATION PROBLEM 1\n";
-     cout << "ANAYZING TRANSMISSIONS AND MALICIOUS CODE IN FILES...\n";
+     cout << "ANAYZING TRANSMISSIONS AND MALICIOUS CODE IN FILES...\n\n";
 
 
      // Part 1: Search for every mcode inside every transmission and display the result
      // If the mcode is found, every occurrence is displayed after true.
-     cout << "\nP A R T 1 :S U B C H A I N    T E S T\n";
+     cout << "========================================================================\n";
+     cout << "P A R T  1:  S U B C H A I N    T E S T\n";
+     cout << "========================================================================\n";
 
      Subchain subchain;
 
      for(int t = 0; t < transmissions.size(); t++){
-          cout << "\nT R A N S M I S S I O N " << t + 1 << "\n\n";
+          cout << "\nT R A N S M I S S I O N   " << t + 1 << "\n\n";
 
           for(int m = 0; m < mcodes.size(); m++){
-               cout << "mcode " << m + 1 << endl;
+               cout << "mcode " << m + 1 << "\n";
 
                vector<int> positions = subchain.search(transmissions[t], mcodes[m]);
 
                if(positions.empty()){
-                    cout << "(false) Chain not found in the transmission\n\n";
+                    cout <<"(false) Chain not found in the transmission\n\n";
                } else {
                     for(int position : positions){
                          cout << "(true) Initial position: " << position + 1 << " Final position: " << position + mcodes[m].length() << endl;
@@ -137,11 +141,14 @@ int main() {
 
 	// Part 2: search the longest palindrome inside every transmission and display the result.
 	// If a palindrome is found, its start and end indexes are displayed.
-	cout << "\nP A R T  2:  P A L I N D R O M E   T E S T\n";
+     cout << "=======================================================================-\n";
+	cout << "P A R T  2:  P A L I N D R O M E   T E S T\n";
+     cout << "========================================================================\n";
+
 
 	Palindrome palindrome;
 	for(int t = 0; t < transmissions.size(); t++){
-		cout << "\nT R A N S M I S S I O N " << t + 1 << "\n\n";
+		cout << "\nT R A N S M I S S I O N   " << t + 1 << "\n\n";
 
 		tuple<int,int> position = palindrome.palindrome(transmissions[t]);
 		// An end index of -1 means the transmission is empty, so there is no palindrome
@@ -149,12 +156,15 @@ int main() {
 			cout << "No poligon found." << endl;
 		} else {
 			cout << "Longest Polindrom at start: " << get<0>(position) << " end: " << get<1>(position) << endl;
+               cout << transmissions[t].substr(get<0>(position), get<1>(position) - get<0>(position) + 1) << endl;
 		}
 	}
 
 	// Part 3: search the longest common substring between the two transmissions and display the result.
 	// If it exists, its start and end positions are displayed.
-	cout << "\nP A R T  3: L O N G E S T   C O M M O N   S U B S T R I N G    T E S T\n\n";
+     cout << "========================================================================\n";
+	cout << "P A R T  3:  L O N G E S T   C O M M O N   S U B S T R I N G    T E S T\n";
+     cout << "========================================================================\n";
 
 	Substring substring;
 	pair<int, int> result = substring.search(transmissions[0], transmissions[1]);
