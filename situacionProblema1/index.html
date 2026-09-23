@@ -9,6 +9,7 @@
     :root{color-scheme:dark;--bg:#101a2b;--panel:#17253a;--panel2:#20324b;--ink:#f4f7fc;--muted:#bbc9da;--line:#50647f;--cyan:#73e5dc;--gold:#ffcf77;--coral:#ff9d93;--blue:#96b8ff;--radius:16px;--shadow:0 18px 48px rgba(3,10,21,.28)}
     *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:18px;line-height:1.45}button{font:inherit}a{color:var(--cyan)}button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:4px}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.45}.deck{min-height:100vh}.slide{min-height:100vh;display:none;flex-direction:column;padding:clamp(24px,4vw,62px) clamp(24px,6vw,100px) 92px;position:relative;overflow:hidden}.slide.active{display:flex}.slide::before{content:"";position:absolute;inset:0 0 auto;height:8px;background:linear-gradient(90deg,var(--cyan) 0 33.3%,var(--gold) 33.3% 66.6%,var(--coral) 66.6%);opacity:.85}.slide-inner{width:min(100%,1500px);margin:auto;position:relative}.kicker{color:var(--cyan);font-size:.85rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;margin:0 0 18px}.slide h1,.slide h2{font-weight:800;letter-spacing:-.035em;line-height:1.07;margin:0 0 22px;text-wrap:balance}.slide h1{font-size:clamp(3.3rem,7.8vw,7rem)}.slide h2{font-size:clamp(2.5rem,5vw,5.2rem)}.lead{font-size:clamp(1.2rem,2.1vw,2rem);line-height:1.35;max-width:38ch;margin:0 0 28px;color:var(--muted)}.large{font-size:clamp(1.2rem,2vw,1.75rem)}.muted{color:var(--muted)}.accent{color:var(--cyan)}.gold{color:var(--gold)}.coral{color:var(--coral)}.blue{color:var(--blue)}.mono,code,.token,.formula,.matrix{font-family:Consolas,"Courier New",monospace}code{font-size:.92em;color:var(--cyan)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,52px);align-items:center}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.stack{display:grid;gap:18px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(22px,2.5vw,36px)}.panel h3{font-size:clamp(1.3rem,2vw,2rem);margin:0 0 12px;line-height:1.15}.panel p:last-child{margin-bottom:0}.panel p{margin-top:0}.keyline{border-top:1px solid var(--line);padding-top:18px}.fact{font-size:clamp(2.1rem,4.5vw,4.4rem);font-weight:800;line-height:1;color:var(--cyan);margin:0 0 10px}.label{font-size:.86rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:800}.takeaway{margin-top:28px;padding:16px 20px;border-radius:12px;background:#274055;color:var(--ink);font-size:clamp(1rem,1.35vw,1.25rem);max-width:1100px}.takeaway strong{color:var(--gold)}.flow{display:flex;align-items:stretch;gap:12px;flex-wrap:wrap}.flow-box{flex:1 1 170px;padding:22px;border-radius:14px;background:var(--panel);border:1px solid var(--line);font-size:1.2rem;font-weight:700}.flow-box small{display:block;font-size:.9rem;font-weight:400;color:var(--muted);margin-top:8px}.flow-arrow{align-self:center;color:var(--gold);font-size:2rem}.list{padding-left:1.2em;margin:0}.list li{margin:0 0 14px}.list li::marker{color:var(--cyan)}.rule{height:1px;background:var(--line);margin:22px 0}.comparison{width:100%;border-collapse:collapse;font-size:clamp(.95rem,1.3vw,1.17rem)}.comparison th,.comparison td{text-align:left;padding:15px 16px;border-bottom:1px solid var(--line);vertical-align:top}.comparison th{color:var(--cyan);font-size:.9rem;text-transform:uppercase;letter-spacing:.07em}.comparison tr:last-child td{border-bottom:0}.comparison strong{color:var(--ink)}.comparison .chosen{background:#254054}.comparison .chosen td:first-child{color:var(--gold);font-weight:800}.chip{display:inline-block;padding:7px 11px;border-radius:8px;background:#294962;color:var(--ink);font-size:.9rem;font-weight:700}.sequence{display:flex;flex-wrap:wrap;gap:7px;margin:20px 0}.token{min-width:42px;height:54px;display:grid;place-items:center;border-radius:9px;background:var(--panel2);border:1px solid var(--line);font-size:1.35rem;font-weight:800}.token.dim{opacity:.38}.token.mark{background:#2d6b70;border-color:var(--cyan);color:#fff}.token.focus{background:#7d5732;border-color:var(--gold);color:#fff}.token.fail{background:#684146;border-color:var(--coral)}.token.separator{color:var(--gold);background:#3c3c51}.token.small{min-width:34px;height:42px;font-size:1rem}.number-row{display:flex;gap:7px;flex-wrap:wrap;color:var(--muted);font-size:.78rem}.number-row span{min-width:42px;text-align:center}.demo{background:#111f34;border:1px solid var(--line);border-radius:var(--radius);padding:clamp(18px,2.5vw,34px);box-shadow:var(--shadow)}.demo-head{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}.demo-title{font-size:1.5rem;font-weight:800;margin:0}.step-count{color:var(--gold);font-size:.95rem;font-weight:800}.demo-description{font-size:clamp(1.1rem,1.65vw,1.5rem);max-width:70ch;min-height:3em;margin:18px 0;color:var(--ink)}.demo-controls{display:flex;gap:10px;margin-top:20px}.demo-controls button,.nav button,.overview-button{background:#29455e;color:var(--ink);border:1px solid #69819c;border-radius:9px;padding:9px 15px;font-weight:700}.demo-controls button:hover:not(:disabled),.nav button:hover,.overview-button:hover{background:#38617c}.legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:.95rem}.legend span::before{content:"";display:inline-block;width:13px;height:13px;border-radius:3px;margin-right:7px;vertical-align:-1px;background:var(--cyan)}.legend .candidate::before{background:var(--gold)}.legend .mismatch::before{background:var(--coral)}.formula{font-size:clamp(1.1rem,1.8vw,1.55rem);padding:20px;background:#102238;border-radius:10px;overflow-x:auto}.matrix-wrap{overflow:auto;max-width:100%}.matrix{border-collapse:separate;border-spacing:4px;margin:14px 0;font-size:1.03rem}.matrix th,.matrix td{width:42px;height:42px;text-align:center;border-radius:6px}.matrix th{color:var(--muted);font-weight:700}.matrix td{background:#243a55;color:var(--ink)}.matrix td.hit{background:#347478;color:#fff}.matrix td.current{background:#8c693a;color:#fff;outline:2px solid var(--gold)}.matrix td.blank{background:#182b40;color:#7c91aa}.scoreline{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px}.scoreline span{background:#29445f;padding:8px 12px;border-radius:7px}.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.result-list{margin:0;padding-left:1.3em}.result-list li{margin:8px 0}.mini-note{font-size:.95rem;color:var(--muted)}.nav{position:fixed;bottom:0;left:0;right:0;z-index:10;display:flex;align-items:center;gap:12px;padding:12px clamp(18px,4vw,55px);background:rgba(8,18,32,.96);border-top:1px solid #52647c}.nav-title{font-size:.85rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:32vw}.nav-progress{height:5px;flex:1;background:#31445d;border-radius:5px;overflow:hidden}.nav-progress span{display:block;height:100%;width:0;background:var(--cyan);transition:width .25s}.nav-count{font-size:.85rem;color:var(--muted);min-width:60px;text-align:right}.nav button{padding:5px 12px;font-size:1.1rem;min-width:40px}.overview{position:fixed;inset:0;z-index:20;display:none;background:rgba(8,16,28,.98);overflow:auto;padding:clamp(26px,5vw,70px)}.overview.open{display:block}.overview h2{font-size:2.3rem;margin:0 0 20px}.overview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;max-width:1200px}.overview-grid button{text-align:left;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:18px;font-size:1.1rem;min-height:90px}.overview-grid button:hover{border-color:var(--cyan)}.overview-grid small{display:block;color:var(--cyan);margin-bottom:7px}.overview-top{display:flex;justify-content:space-between;align-items:center;gap:20px;max-width:1200px}.hero-wire{font-family:Consolas,"Courier New",monospace;font-size:clamp(1.2rem,2.2vw,2.6rem);letter-spacing:.06em;line-height:1.9;color:var(--muted);word-break:break-all}.hero-wire .lit{color:var(--cyan);background:#295b66;border-radius:5px;padding:4px}.hero-meta{display:flex;gap:25px;flex-wrap:wrap;margin-top:40px;color:var(--muted);font-size:1rem}.center{text-align:center}.center .lead{margin-left:auto;margin-right:auto}.center .takeaway{margin-left:auto;margin-right:auto}.qmark{font-size:clamp(7rem,20vw,17rem);line-height:.8;color:var(--cyan);font-weight:800}.slide-number{position:absolute;top:32px;right:clamp(24px,6vw,100px);color:#8298b2;font-size:.9rem;font-weight:700}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     body{font-family:"Trebuchet MS","Segoe UI",sans-serif}.nav-progress span{transition:none}
+    .slide{height:100dvh}.slide-inner{transform-origin:top center}.demo-description{min-height:1.6em;margin:10px 0}
     @media(max-width:850px){.grid2,.grid3,.results-grid{grid-template-columns:1fr}.slide{padding-top:65px;overflow-y:auto}.slide-inner{margin:0 auto}.flow-arrow{display:none}.comparison{font-size:.93rem}.comparison th,.comparison td{padding:10px 8px}.token{min-width:32px;height:42px;font-size:1rem}.number-row span{min-width:32px}.nav-title{display:none}.demo-description{min-height:0}.slide-number{top:24px}.hero-wire{font-size:1.1rem}}
     @media(max-height:740px) and (min-width:851px){.slide{padding-top:42px}.slide h2{font-size:clamp(2.3rem,4vw,4.2rem);margin-bottom:13px}.lead{font-size:1.35rem}.panel{padding:18px}.takeaway{margin-top:18px}.demo-description{margin:10px 0;min-height:0}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nav-progress span{transition:none}}
@@ -33,12 +34,6 @@
   <section class="slide" data-title="Inputs and requirements" aria-label="Slide 3: Inputs and requirements"><div class="slide-inner grid2">
     <div><p class="kicker">General requirements</p><h2>Five fixed files.<br>One automatic run.</h2><p class="lead">The program reads two transmission files and three malicious-code files without prompting the user.</p><div class="panel"><p class="mono" style="margin:0">transmission/transmission1.txt<br>transmission/transmission2.txt<br><br>mcode/mcode1.txt<br>mcode/mcode2.txt<br>mcode/mcode3.txt</p></div></div>
     <div class="stack"><div class="panel"><h3>Input contract</h3><p>Hexadecimal characters <code>0–9</code> and <code>A–F</code>. Line breaks are discarded, so each file becomes one continuous string.</p></div><div class="panel"><h3>Output contract</h3><p>Report every pattern occurrence, one longest palindrome per transmission, and the longest common substring’s position in transmission 1.</p></div><div class="panel"><h3>Implementation</h3><p>C++ classes isolate each algorithm; <code>main.cpp</code> handles file reading and output.</p></div></div>
-  </div></section>
-
-  <section class="slide" data-title="Program flow" aria-label="Slide 4: Program flow"><div class="slide-inner">
-    <p class="kicker">How the program works</p><h2>One input pipeline, three analyses.</h2>
-    <div class="flow"><div class="flow-box">Read files<small>Strip line breaks</small></div><span class="flow-arrow">→</span><div class="flow-box">Z-Algorithm<small>2 transmissions × 3 codes</small></div><span class="flow-arrow">→</span><div class="flow-box">Manacher<small>Once per transmission</small></div><span class="flow-arrow">→</span><div class="flow-box">Dynamic programming<small>Compare both transmissions</small></div><span class="flow-arrow">→</span><div class="flow-box">Report positions<small>Human-readable results</small></div></div>
-    <div class="grid2" style="margin-top:35px"><div class="panel"><h3>Why separate classes?</h3><p>Each class receives strings and returns positions. The orchestration code controls the order and display.</p></div><div class="panel"><h3>Presentation roadmap</h3><p>For each part: requirement → live visual → algorithm choice and complexity → observed result.</p></div></div>
   </div></section>
 
   <section class="slide" data-title="Part 1 · Pattern search" aria-label="Slide 5: Part 1 requirements"><div class="slide-inner grid2">
@@ -106,40 +101,52 @@
     <p class="takeaway"><strong>Conclusion:</strong> The three algorithms answer complementary questions. The current choices favor predictable searches, fast palindrome detection, and an inspectable similarity comparison. Testing also covered alternate files and empty-input edge cases.</p>
   </div></section>
 
-  <section class="slide" data-title="Questions" aria-label="Slide 16: Questions"><div class="slide-inner center"><p class="kicker">Thank you</p><div class="qmark" aria-hidden="true">?</div><h2>Questions</h2><p class="lead">Which of the three analyses would you optimize first if transmission size grew substantially?</p><p class="muted">Use <strong>← / →</strong> to navigate, <strong>O</strong> for slide overview, and the on-screen buttons to replay each algorithm.</p></div></section>
+  <section class="slide" data-title="Questions" aria-label="Questions"><div class="slide-inner center"><p class="kicker">Thank you</p><div class="qmark" aria-hidden="true">?</div><h2>Questions</h2></div></section>
 </main>
 
 <nav class="nav" aria-label="Presentation navigation"><button type="button" id="prev-slide" aria-label="Previous slide">←</button><button type="button" id="next-slide" aria-label="Next slide">→</button><button type="button" id="open-overview" aria-label="Open slide overview">☷</button><span class="nav-title" id="nav-title"></span><div class="nav-progress" aria-hidden="true"><span id="nav-progress-fill"></span></div><span class="nav-count" id="nav-count"></span></nav>
 <div class="overview" id="overview" role="dialog" aria-modal="true" aria-label="Slide overview"><div class="overview-top"><h2>Go to a slide</h2><button type="button" class="overview-button" id="close-overview">Close</button></div><div class="overview-grid" id="overview-grid"></div></div>
 <script>
   const slides = [...document.querySelectorAll('.slide')];
+  slides.forEach((slide, i) => slide.setAttribute('aria-label', `Slide ${i + 1}: ${slide.dataset.title}`));
   let slideIndex = 0;
   const demoIndex = { z: 0, man: 0, dp: 0 };
   const zSteps = [
-    {active:[],focus:[],fail:[],text:'Start with pattern A6A, a separator, and transmission 9A6A2A6A. The pattern length is 3.'},
-    {active:[],focus:[4],fail:[4],text:'At the first text character, 9 does not match prefix character A. The Z value is 0.'},
-    {active:[5,6,7],focus:[5,6,7],fail:[],text:'At text position 2, A → 6 → A matches the full prefix. Z = 3, so report a match at position 2.'},
-    {active:[7],focus:[7,8],fail:[8],text:'Inside that match’s Z-box, reuse one known character at index 7. Only the next, unverified character needs comparing; 2 breaks the extension.'},
-    {active:[],focus:[8],fail:[8],text:'The next text character is 2. It does not match prefix character A, so no occurrence begins here.'},
-    {active:[5,6,7,9,10,11],focus:[9,10,11],fail:[],text:'At text position 6, the full A6A matches again. Z = 3, so report a second occurrence.'}
+    {active:[],focus:[],fail:[],text:'Pattern A6A · text 9A6A2A6A.'},
+    {active:[],focus:[4],fail:[4],text:'9 ≠ A → Z = 0.'},
+    {active:[5,6,7],focus:[5,6,7],fail:[],text:'A6A matches → Z = 3 → hit at 2.'},
+    {active:[7],focus:[7,8],fail:[8],text:'Reuse one character; 2 stops expansion.'},
+    {active:[],focus:[8],fail:[8],text:'2 ≠ A → Z = 0.'},
+    {active:[5,6,7,9,10,11],focus:[9,10,11],fail:[],text:'A6A matches → second hit at 6.'}
   ];
   const manSteps = [
-    {active:[],focus:[],text:'Insert | before, between, and after characters: |A|6|A|2|. Every palindrome now has a single center.'},
-    {active:[],focus:[3],text:'Take 6 as the center. Its current radius starts at zero.'},
-    {active:[2,3,4],focus:[2,4],text:'The separators on both sides match. Expand the radius to 1.'},
-    {active:[1,2,3,4,5],focus:[1,5],text:'The A characters also match. Continue expanding to radius 2.'},
-    {active:[0,1,2,3,4,5,6],focus:[0,6],text:'The outer separators match. Radius 3 corresponds to palindrome A6A in the original string.'},
-    {active:[0,1,2,3,4,5,6],focus:[7],text:'The next comparison cannot extend this palindrome. Its right edge is now index 6.'},
-    {active:[4,5,6],focus:[5],text:'Center 5 mirrors center 1 across center 3. Reuse its known radius 1, then compare only beyond the right edge.'}
+    {active:[],focus:[],text:'Add separators: |A|6|A|2|.'},
+    {active:[],focus:[3],text:'Center: 6 · radius: 0.'},
+    {active:[2,3,4],focus:[2,4],text:'Matching separators → radius 1.'},
+    {active:[1,2,3,4,5],focus:[1,5],text:'Matching A’s → radius 2.'},
+    {active:[0,1,2,3,4,5,6],focus:[0,6],text:'Outer separators → radius 3 → A6A.'},
+    {active:[0,1,2,3,4,5,6],focus:[7],text:'Right edge reached at index 6.'},
+    {active:[4,5,6],focus:[5],text:'Mirror center → reuse radius 1.'}
   ];
   const dpRows = '8A6B2', dpCols = '7A6B9';
   const dpSteps = [
-    {row:0,col:0,text:'Start with zeros. Each cell will store the length of a common substring ending at its row and column.'},
-    {row:2,col:2,text:'A matches A. The upper-left diagonal is 0, so this cell becomes 1.'},
-    {row:3,col:3,text:'6 matches 6. Extend the diagonal: 1 + 1 = 2.'},
-    {row:4,col:4,text:'B matches B. Extend again: 2 + 1 = 3. This is the best length so far.'},
-    {row:5,col:5,text:'2 and 9 differ, so this cell is 0. The best remains A6B, length 3, in T1 positions 2–4.'}
+    {row:0,col:0,text:'Start with zeros.'},
+    {row:2,col:2,text:'A = A → 1.'},
+    {row:3,col:3,text:'6 = 6 → 2.'},
+    {row:4,col:4,text:'B = B → 3 (best).'},
+    {row:5,col:5,text:'2 ≠ 9 → 0. Best: A6B.'}
   ];
+  function fitSlide() {
+    const slide = slides[slideIndex];
+    const inner = slide.querySelector('.slide-inner');
+    inner.style.transform = '';
+    if (window.innerWidth <= 850 || window.matchMedia('print').matches) return;
+    const style = getComputedStyle(slide);
+    const availableHeight = slide.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+    const availableWidth = slide.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    const scale = Math.min(1, availableHeight / inner.scrollHeight, availableWidth / inner.scrollWidth);
+    if (scale < 1) inner.style.transform = `scale(${scale})`;
+  }
   function showSlide(next) {
     slideIndex = Math.max(0, Math.min(slides.length - 1, next));
     slides.forEach((slide, i) => { slide.classList.toggle('active', i === slideIndex); slide.setAttribute('aria-hidden', String(i !== slideIndex)); });
@@ -148,8 +155,10 @@
     document.getElementById('nav-progress-fill').style.width = `${(slideIndex + 1) / slides.length * 100}%`;
     document.getElementById('prev-slide').disabled = slideIndex === 0;
     document.getElementById('next-slide').disabled = slideIndex === slides.length - 1;
+    slides[slideIndex].scrollTop = 0;
     window.scrollTo(0, 0);
     history.replaceState(null, '', `#slide-${slideIndex + 1}`);
+    requestAnimationFrame(fitSlide);
   }
   function renderTokens(target, indexTarget, text, step, small=false) {
     const box = document.getElementById(target); box.replaceChildren();
@@ -167,7 +176,7 @@
     for(let i=0;i<=5;i++){ const tr=document.createElement('tr'); const label=document.createElement('th'); label.textContent=i===0?'∅':dpRows[i-1]; tr.append(label); for(let j=0;j<=5;j++){ const td=document.createElement('td'); const visible=i===0||j===0||(i<step.row||(i===step.row&&j<=step.col)); td.textContent=visible?values[i][j]:''; if(i===0||j===0)td.className='blank'; else if(visible&&values[i][j]>0)td.className='hit'; if(i===step.row&&j===step.col&&i>0)td.className='current'; tr.append(td); } table.append(tr); }
     wrap.replaceChildren(table); document.getElementById('dp-description').textContent=step.text; document.getElementById('dp-count').textContent=`Step ${demoIndex.dp+1} of ${dpSteps.length}`;
   }
-  function moveDemo(name, delta) { const steps={z:zSteps,man:manSteps,dp:dpSteps}[name]; demoIndex[name]=Math.max(0,Math.min(steps.length-1,demoIndex[name]+delta)); ({z:renderZ,man:renderMan,dp:renderDP})[name](); }
+  function moveDemo(name, delta) { const steps={z:zSteps,man:manSteps,dp:dpSteps}[name]; demoIndex[name]=Math.max(0,Math.min(steps.length-1,demoIndex[name]+delta)); ({z:renderZ,man:renderMan,dp:renderDP})[name](); requestAnimationFrame(fitSlide); }
   function toggleOverview(open){const overview=document.getElementById('overview');overview.classList.toggle('open',open); if(open)document.getElementById('close-overview').focus();else document.getElementById('open-overview').focus();}
   document.getElementById('prev-slide').addEventListener('click',()=>showSlide(slideIndex-1));
   document.getElementById('next-slide').addEventListener('click',()=>showSlide(slideIndex+1));
@@ -176,6 +185,8 @@
   document.querySelectorAll('[data-demo]').forEach(button=>button.addEventListener('click',()=>moveDemo(button.dataset.demo,Number(button.dataset.move))));
   const overviewGrid=document.getElementById('overview-grid'); slides.forEach((slide,i)=>{const button=document.createElement('button');button.type='button';button.innerHTML=`<small>SLIDE ${String(i+1).padStart(2,'0')}</small>${slide.dataset.title}`;button.addEventListener('click',()=>{showSlide(i);toggleOverview(false)});overviewGrid.append(button)});
   document.addEventListener('keydown',event=>{if(event.altKey||event.ctrlKey||event.metaKey)return;const tag=document.activeElement?.tagName;if(tag==='BUTTON'&&(event.key===' '||event.key==='Enter'))return;const isOpen=document.getElementById('overview').classList.contains('open');if(event.key==='Escape'&&isOpen){toggleOverview(false);return}if(event.key.toLowerCase()==='o'){toggleOverview(!isOpen);return}if(isOpen)return;if(event.key==='ArrowRight'||event.key==='PageDown'||event.key===' '){event.preventDefault();showSlide(slideIndex+1)}else if(event.key==='ArrowLeft'||event.key==='PageUp'){event.preventDefault();showSlide(slideIndex-1)}else if(event.key==='Home'){showSlide(0)}else if(event.key==='End'){showSlide(slides.length-1)}});
+  window.addEventListener('resize', fitSlide);
+  document.fonts?.ready.then(fitSlide);
   renderZ();renderMan();renderDP();const initial=Number(location.hash.match(/^#slide-(\d+)$/)?.[1]||1)-1;showSlide(initial);
 </script>
 </body>
