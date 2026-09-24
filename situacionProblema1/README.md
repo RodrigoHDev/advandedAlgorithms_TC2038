@@ -110,6 +110,18 @@ To find the longest common substring between the two transmissions, the classic 
 
 The program was tested using different provided versions of mcode and transmission files. In total, 9 mcode files and 6 transmission files were used across multiple test runs, combining them in different pairings to exercise Subchain, Palindrome and Substring against a variety of scenarios rather than a single fixed input.
 
+| Test No. | Transmission files | Mcode files | Outcome 1st Part | Outcome 2nd Part | Outcome 3rd Part |
+|---|---|---|---|---|---|
+| 1 | transmission1.txt transmission2.txt | mcode1.txt mcode2.txt mcode3.txt | | | |
+| 2 | transmission11.txt transmission12.txt | mcode11.txt mcode12.txt mcode13.txt | | | |
+| 3 | transmission21.txt transmission22.txt | mcode21.txt mcode22.txt mcode23.txt | | | |
+| 4 | transmission31.txt transmission32.txt | mcode31.txt mcode32.txt mcode33.txt | | | |
+| 5 | transmission41.txt transmission42.txt | mcode41.txt mcode42.txt mcode43.txt | | | |
+| 6 | transmission51.txt transmission52.txt | mcode51.txt mcode52.txt mcode53.txt | | | |
+| 7 | transmission61.txt transmission62.txt | mcode61.txt mcode62.txt mcode63.txt | | | |
+| 8 | transmission1.txt transmissionempty.txt | mcodeempty.txt mcode2.txt mcode3.txt | | | |
+
+
 Beyond the provided cases, additional modified test files were built specifically to stress edge cases that are not guaranteed to appear in the standard test set:
 
 - Empty transmission: verifies that Subchain::search() and Palindrome::palindrome() handle a zero-length transmission without crashing or reading out of bounds, and that they report the expected "not found" / "no palindrome" behavior instead of a false positive.
@@ -139,13 +151,17 @@ For every test run, in addition to comparing the program's output against the ex
 - **Suffix Array + LCP (Longest Common Prefix):** concatenate both transmissions with a unique separator, build the suffix array (O(n log n) with efficient algorithms) and the LCP array (O(n) with Kasai's algorithm), then scan the LCP array looking for the maximum value between suffixes coming from different transmissions. Overall complexity O(n log n), which is asymptotically better than the O(T1 · T2) dynamic programming solution when transmissions are very large, although its implementation is considerably more complex.
 - **Generalized Suffix Automaton / Suffix Tree:** allows solving the problem in O(T1 + T2), making it the asymptotically most efficient option of all. The cost is a significantly more elaborate implementation (building a generalized suffix automaton and traversing it to find the "deepest" state reachable from both strings). For the expected size of the transmissions in this problem, the implemented O(T1 · T2) dynamic programming solution is simpler to verify and debug, at the cost of scaling worse if the test files were to become very large.
 
+## Test Cases
+
+
+
 ## General conclusion
 
-In the imaginary context of the problem —detecting "mirrored" malicious code hidden inside data transmissions between devices— the developed solution prioritizes algorithms with linear (or near-linear) complexity in each individual stage: the Z-algorithm resolves the search for each mcode in O(T + M) time, and Manacher's algorithm finds the longest palindrome of each transmission in O(T). This is especially relevant given that a real intrusion-detection system would need to analyze potentially very large transmissions close to real time, so avoiding quadratic algorithms in these two stages represents a significant advantage.
+The current document exposes the logic, decisions and alteratives to the program developed within the context of detecting malicious code inside data transmissions between devices, based on the algorithms learned in the subject *Advanced Algorithms Analysis and Design*. The reflected three classes and a main file are the result of identifying the requirements to solve (very clearly depicted in the problem descrciption) and based on the acquired knowledge and consulting notes and presentations, implementing a total of three algorithms for string manipulation: `Z-Algorithm`, `Manacher's Algorithm`, and application of `Dynamic Programming`.
 
-The only stage that retains quadratic complexity, O(T1 · T2), is the similarity comparison between the two full transmissions (Part 3). This is acceptable given that this comparison is performed only once between exactly two files (unlike the other parts, which repeat for every transmission-mcode combination), and the simplicity of the dynamic programming approach makes it easier to verify and maintain. However, as detailed in the additional options section, if the volume of transmissions to compare grew — for example, if a real-world scenario required comparing many transmissions against each other to detect repeated suspicious behavior patterns — it would be worth migrating this stage toward a solution based on suffix arrays or suffix automata, trading implementation simplicity for scalability.
+However, the conclusion we present here are not based on the difficulty of the implementation, but about the **importance of choosing the right algorithm** not only based on the outcome you require or the complexity in the worst case scenario, but finding a balance by understanding the dimensions of its usage, the required implementation or preparation that it may or may not require, and the data it will process, as these three factors make the difference between overworking and delivering just the right result for the ocassion.
 
-Overall, the design balances the asymptotic efficiency needed for a real-time threat-detection scenario with code clarity and maintainability, leaving the door open for further optimizations (such as Aho-Corasick for multiple patterns, or suffix structures for large-scale comparisons) should the data volume of the problem grow beyond what was considered in this situation problem.
+Although we are aware that the implemented algotithms are not the best of their class inside string manipulation, we selected these by finding the balance between the relatively limited and small data to process, as well as an easy implementation that does not consume excessive memory for storage or overcomplicates the process; finally delivering the correct outputs on time and place.
 
 ## References
  
