@@ -21,6 +21,7 @@
 #include <string>
 
 #include "djikstra.h"
+#include "floyd.h"
 
 using namespace std;
 
@@ -134,7 +135,10 @@ int main() {
           printDjikstraResults(i, points);
      }
      
-
+     // Run Floyd to obtain all-pairs minimum costs
+     Floyd floyd;
+     vector<vector<int>> floydMatrix = floyd.pathFinding(elements, matrix);
+     printMatrix(floydMatrix, "Floyd matrix");
 
      return 0;
 }
