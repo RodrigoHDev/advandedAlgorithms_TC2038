@@ -221,7 +221,7 @@ class tsp {
       * cheapest one needs to be kept.
       *
       * State:
-      * dp[mask][i] = minimum cost of starting at city 0, visiting exactly the
+      * dp[mask][i] = minimum cost of starting at city 0, visiting exactly theTod
       * cities in mask, and ending at city i.
       * mask is an integer used as a set: bit j is 1 if city j was visited.
       *   Example with n = 4: mask = 1101 = 13 -> visited {0, 2, 3}.
