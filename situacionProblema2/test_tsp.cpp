@@ -46,7 +46,7 @@ void probar(const string& nombre, const vector<vector<int>>& m,
                long long esperado, const string& nombres = "") {
      int n = m.size();
      tsp solver;
-     vector<int> tour = solver.tsp_process(n, m);
+     vector<int> tour = solver.held_karp(n, m);
 
      cout << "== " << nombre << " ==\n";
      cout << "Tour obtenido: ";
@@ -110,7 +110,7 @@ int main() {
           {32, 21, 16, 30,  0, 14},
           {38, 29, 18, 29, 14,  0}
      };
-     probar("Caso 2: 6 ciudades (A-F)", caso2, 112, "ABCDEF");
+     probar("Caso 2: 6 ciudades (A-F)", caso2, 92);
 
      // ------------------------------------------------------------------
      // Caso 3: 5 nodos donde el greedy se equivoca bastante
@@ -135,7 +135,7 @@ int main() {
           {5, 7, 8, 0, 3},
           {2, 2, 5, 3, 0}
      };
-     probar("Caso 3: 5 nodos (greedy no optimo)", caso3, 22);
+     probar("Caso 3: 5 nodos (greedy no optimo)", caso3, 17);
 
      return 0;
 }

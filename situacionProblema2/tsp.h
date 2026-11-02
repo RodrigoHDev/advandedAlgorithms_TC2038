@@ -2,8 +2,15 @@
  * Title: tsp.h
  *
  * Description:
- * Creation of tsp object to find an approximate solution to the Traveling
- * Salesman Problem (TSP) using the greedy edge heuristic. Given a complete,
+ * Creation of tsp object to solve the Traveling Salesman Problem (TSP) with
+ * two methods:
+ *   - tsp_process(): approximate solution with the greedy edge heuristic.
+ *     Fast, works for large inputs, but does not guarantee the optimum.
+ * 
+ *   - held_karp(): exact solution with dynamic programming over subsets.
+ *     Always finds the optimum, but is exponential (viable up to n ~ 20).
+ *
+ * Greedy edge heuristic: given a complete,
  * symmetric graph represented as an adjacency matrix, it builds a cycle that
  * visits every city exactly once and returns to the starting city.
  *
@@ -22,7 +29,7 @@
  * Implementation for the subject- Analysis and Design of Advanced
  * Algorithms
  *
- * Author: Alexis Yaocalli Berthou Haas - A01713458 & Rodrigo Alejandro Hurtado Cortes - A01713854 & Ricardo Rodríguez Medica - A01710266
+ * Author: Alexis Yaocalli Berthou Haas - A01713458 & Rodrigo Alejandro Hurtado Cortes - A01713854 & Ricardo
  * Date: Septiembre 3, 2026
  */
 
@@ -36,6 +43,7 @@
 #include <tuple>
 #include <algorithm>
 #include <numeric>
+#include <climits>
 
 using namespace std;
 
@@ -199,6 +207,126 @@ class tsp {
           }
 
           return finalPath;
+     }
+
+
+
+
+     /**
+      * held_karp()
+      * Finds the OPTIMAL tour using dynamic programming over subsets
+      *
+      * Key idea:
+      * For the rest of the tour, the only things that matter about a partial
+      * path are (1) which cities were already visited and (2) the city we are
+      * standing on. The order used to visit them does not matter, so among all
+      * partial paths with the same set and the same last city only the
+      * cheapest one needs to be kept.
+      *
+      * State:
+      * dp[mask][i] = minimum cost of starting at city 0, visiting exactly the
+      * cities in mask, and ending at city i.
+      * mask is an integer used as a set: bit j is 1 if city j was visited.
+      *   Example with n = 4: mask = 1101 = 13 -> visited {0, 2, 3}.
+      *
+      * Recurrence:
+      *   Base:       dp[{0}][0] = 0   (mask = 1, standing at the start)
+      *   Transition: dp[mask | {j}][j] = min(dp[mask | {j}][j],
+      *                                       dp[mask][i] + matrix[i][j])
+      *               for every reachable state (mask, i) and every city j
+      *               not in mask.
+      *   Answer:     min over i of dp[all][i] + matrix[i][0]
+      *               (all cities visited, then return to city 0).
+      *
+      * Complexity:
+      *  Time: O(n^2 * 2^n)
+      *   - Table initialization: O(n * 2^n)
+      *   - Filling the table: 2^n masks * n last cities * n next cities
+      *     = O(n^2 * 2^n)  <- dominant term
+      *   - Choosing the best last city: O(n)
+      *   - Rebuilding the path: O(n)
+      * 
+      *  Space: O(n * 2^n)
+      *   - dp table: 2^n rows * n columns of long long
+      *   - from table: 2^n rows * n columns of int
+      *  In practice the limit is memory: n = 20 needs ~250 MB, so this method
+      *  is only viable up to n ~ 20-22.
+      *
+      * Params:
+      * n is the number of cities.
+      * matrix is the n x n adjacency matrix, where matrix[i][j] is the
+      * distance from city i to city j. Passed by constant reference to avoid
+      * copying it. It also works for asymmetric matrices.
+      * Returns:
+      * a vector with the n cities of the optimal tour in visiting order,
+      * starting at city 0. The return to the starting city is implicit.
+      */
+     vector<int> held_karp(int n, const vector<vector<int>>& matrix) {
+          // With a single city the tour is just that city
+          if (n == 1) return {0};
+
+          // Stage 1: table initialization -> O(n * 2^n) time and space
+          const long long INF = LLONG_MAX / 2;
+          int FULL = 1 << n;                    // number of subsets = 2^n
+
+          // dp[mask][i]: best cost for the state (visited set, current city)
+          vector<vector<long long>> dp(FULL, vector<long long>(n, INF));
+          // from[mask][i]: city visited right before i in that best path,
+          // used at the end to rebuild the tour
+          vector<vector<int>> from(FULL, vector<int>(n, -1));
+
+          // Base case: only city 0 visited, standing at 0, cost 0
+          dp[1][0] = 0;
+
+          // Stage 2: fill the table -> O(n^2 * 2^n) time
+          for (int mask = 1; mask < FULL; mask++) {              // 2^n masks
+               // Every valid path starts at city 0, so bit 0 must be set
+               if (!(mask & 1)) continue;
+
+               for (int i = 0; i < n; i++) {                     // n last cities
+                    if (!(mask & (1 << i)) || dp[mask][i] == INF) continue;
+
+                    for (int j = 0; j < n; j++) {                // n next cities
+                         if (mask & (1 << j)) continue;          // already visited
+
+                         int nextMask = mask | (1 << j);         // add j to the set
+                         long long cost = dp[mask][i] + matrix[i][j];
+
+                         // Keep only the cheapest way to reach (nextMask, j)
+                         if (cost < dp[nextMask][j]) {
+                              dp[nextMask][j] = cost;
+                              from[nextMask][j] = i;
+                         }
+                    }
+               }
+          }
+
+          // Stage 3: close the cycle -> O(n) time
+          int last = -1;
+          long long best = INF;
+          for (int i = 1; i < n; i++) {
+               long long cost = dp[FULL - 1][i] + matrix[i][0];
+               if (cost < best) {
+                    best = cost;
+                    last = i;
+               }
+          }
+
+          // Stage 4: rebuild the path -> O(n) time and space
+          // Walk backwards with from[][]: save the current city, remove it
+          vector<int> path;
+          int mask = FULL - 1;
+          int cur = last;
+          while (cur != -1) {
+               path.push_back(cur);
+               int prev = from[mask][cur];
+               mask ^= (1 << cur);                  // remove cur from the set
+               cur = prev;
+          }
+
+          // The path was built from the end to the start
+          reverse(path.begin(), path.end());
+          return path;
      }
 };
 
