@@ -29,6 +29,9 @@
 #ifndef TSP_H
 #define TSP_H
 
+// Seccion 2: heuristica TSP para visitar cada colonia una vez y regresar
+// al origen. Produce un recorrido aproximado; no garantiza el mas corto.
+
 #include <vector>
 #include <tuple>
 #include <algorithm>
