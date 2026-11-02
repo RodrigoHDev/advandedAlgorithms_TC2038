@@ -4,6 +4,9 @@
 #include "kruskal.h"
 #include "edmonds_karp.h"
 #include <utility>
+#include <iomanip>
+#include "tsp.h"
+#include "nearest.h" 
 
 using namespace std;
 
@@ -100,7 +103,29 @@ int main(int argc, char* argv[]) {
          << newLocation.first << ", "
          << newLocation.second << ")" << endl;
 
+    
+    
     kruskal(distances, N);
+
+
+
+    // Section 2: shortest route visiting every colony and returning to the start.
+    // Held-Karp is exact but exponential, so the greedy heuristic is used
+    // for inputs too large to fit in memory.
+    tsp solver;
+    vector<int> route = solver.held_karp(N, distances);
+
+    long long routeCost = 0;
+    for (int i = 0; i < N; i++)
+        routeCost += distances[route[i]][route[(i + 1) % N]];
+
+    cout << "\n=== SHORTEST ROUTE ===\n";
+    cout << "Route: ";
+    for (int i = 0; i < N; i++)
+        cout << "Colony " << route[i] + 1 << " -> ";
+    cout << "Colony " << route[0] + 1 << '\n';
+    cout << "Total distance: " << routeCost << " km\n";
+
 
     // Seccion 3: flujo maximo desde la primera hasta la ultima colonia.
     long long maxFlow = edmondsKarp(capacities, 0, N - 1);
@@ -110,7 +135,19 @@ int main(int argc, char* argv[]) {
     }
     cout << "\n=== MAXIMUM FLOW (EDMONDS-KARP) ===\n";
     cout << "Maximum information flow (first to last colony): "
-         << maxFlow << '\n';
+        << maxFlow << '\n';
+
+
+     // Section 4: closest existing center to the new customer.
+    nearest near;
+    pair<int, double> closest = near.nearest_central(centers, newLocation);
+
+    cout << "\n=== CLOSEST CENTER ===\n";
+    cout << "Closest center: Center " << closest.first + 1 << " ("
+        << centers[closest.first].first << ", "
+        << centers[closest.first].second << ")\n";
+    cout << fixed << setprecision(2)
+        << "Distance: " << closest.second << '\n';
 
     return 0;
 }
