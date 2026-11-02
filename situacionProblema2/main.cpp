@@ -1,126 +1,26 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <numeric>
+#include "kruskal.h"
+#include "edmonds_karp.h"
 #include <utility>
 
 using namespace std;
 
-// Represents an edge between two colonies
-struct Edge {
-    int u, v;
-    int weight;
-};
-
-// Disjoint Set Union (DSU)
-struct DSU {
-    vector<int> parent, rank;
-
-    DSU(int n) {
-        parent.resize(n);
-        rank.resize(n, 0);
-        iota(parent.begin(), parent.end(), 0);
-    }
-
-    int find(int x) {
-        if (parent[x] != x)
-            parent[x] = find(parent[x]);
-
-        return parent[x];
-    }
-
-    bool unite(int a, int b) {
-        a = find(a);
-        b = find(b);
-
-        if (a == b)
-            return false;
-
-        if (rank[a] < rank[b])
-            swap(a, b);
-
-        parent[b] = a;
-
-        if (rank[a] == rank[b])
-            rank[a]++;
-
-        return true;
-    }
-};
-
-// Kruskal's Minimum Spanning Tree
-void kruskal(const vector<vector<int>>& distances, int n) {
-
-    vector<Edge> edges;
-
-    // 1. Build the edge list from the adjacency matrix
-    for (int i = 0; i < n; i++) {
-        for (int j = i + 1; j < n; j++) {
-
-            if (distances[i][j] > 0) {
-                edges.push_back({i, j, distances[i][j]});
-            }
-        }
-    }
-
-    // 2. Sort edges by weight
-    sort(edges.begin(), edges.end(),
-        [](const Edge& a, const Edge& b) {
-            return a.weight < b.weight;
-        });
-
-    // 3. Initialize DSU
-    DSU dsu(n);
-
-    int totalWeight = 0;
-    int selectedEdges = 0;
-
-    cout << "\n=== MINIMUM SPANNING TREE (KRUSKAL) ===\n";
-
-    // 4. Select edges without creating cycles
-    for (const Edge& edge : edges) {
-
-        if (dsu.unite(edge.u, edge.v)) {
-
-            char u = 'A' + edge.u;
-            char v = 'A' + edge.v;
-
-            cout << "(" << u << ", " << v << ") - "
-                 << edge.weight << " km\n";
-
-            totalWeight += edge.weight;
-            selectedEdges++;
-
-            if (selectedEdges == n - 1)
-                break;
-        }
-    }
-
-    // 5. Display result
-    if (selectedEdges != n - 1) {
-        cout << "Error: The graph is disconnected. "
-             << "It is impossible to connect all colonies.\n";
-        return;
-    }
-
-    cout << "Total cable required: "
-         << totalWeight << " km\n";
-}
-
-int main() {
-    ifstream file("input.txt");
+int main(int argc, char* argv[]) {
+    // An optional path selects a test input; input.txt remains the default.
+    const char* inputPath = argc > 1 ? argv[1] : "input.txt";
+    ifstream file(inputPath);
 
     if (!file.is_open()) {
-        cerr << "Error: Could not open input.txt" << endl;
+        cerr << "Error: Could not open " << inputPath << endl;
         return 1;
     }
 
     int N;
 
     // 1. Read number of colonies
-    file >> N;
-
-    if (N <= 0) {
+    if (!(file >> N) || N <= 0) {
         cerr << "Error: Invalid number of colonies" << endl;
         return 1;
     }
@@ -145,9 +45,7 @@ int main() {
 
     // 4. Read number of existing centers
     int K;
-    file >> K;
-
-    if (K <= 0) {
+    if (!(file >> K) || K <= 0) {
         cerr << "Error: Invalid number of centers" << endl;
         return 1;
     }
@@ -203,6 +101,16 @@ int main() {
          << newLocation.second << ")" << endl;
 
     kruskal(distances, N);
+
+    // Seccion 3: flujo maximo desde la primera hasta la ultima colonia.
+    long long maxFlow = edmondsKarp(capacities, 0, N - 1);
+    if (maxFlow == -1) {
+        cerr << "Error: Invalid capacity matrix or colony indices\n";
+        return 1;
+    }
+    cout << "\n=== MAXIMUM FLOW (EDMONDS-KARP) ===\n";
+    cout << "Maximum information flow (first to last colony): "
+         << maxFlow << '\n';
 
     return 0;
 }
