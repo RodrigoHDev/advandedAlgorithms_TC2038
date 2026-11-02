@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Presentación visual de la situación problema: un caso, cuatro decisiones.">
+<title>SP2 · Algoritmos para colonias y centrales</title>
+<style>
+:root{--bg:#10191e;--surface:#162329;--text:#f4f4e9;--muted:#adbec3;--line:#40535b;--dim:#7c929b;--accent:#d4f878;--cyan:#6bdfd4;--warm:#ffb789;--ink:#172117}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:20px/1.4 "Aptos","Segoe UI",Arial,sans-serif}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid var(--cyan);outline-offset:5px}a{color:var(--cyan);text-underline-offset:4px}h1,h2,h3,p{margin:0}h1,h2{font-weight:600;letter-spacing:-.035em;line-height:1.04;text-wrap:balance}h2{font-size:clamp(32px,3.5vw,52px);max-width:27ch}h3{font-size:24px;font-weight:500}p{max-width:50ch}.top{height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 4vw;font-size:13px;color:var(--muted)}.edition{color:var(--accent);font-weight:600}.top-right{display:flex;gap:25px;align-items:center}.top button{border:0;color:var(--muted);background:none;padding:9px}.top button:hover{color:var(--text)}main{padding:8px 4vw 100px;max-width:1700px;margin:auto}.eyebrow{color:var(--accent);font-size:13px;margin-bottom:12px}.head{display:flex;gap:35px;align-items:flex-start;justify-content:space-between;min-height:100px;margin-bottom:18px}.head .lead{font-size:17px;color:var(--muted);max-width:32ch;line-height:1.5;padding-top:7px}.stage{position:relative;min-width:0}.stage-layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:40px;align-items:center}.stage-layout.wide-aside{grid-template-columns:minmax(0,1fr) 350px}.visual{min-width:0;position:relative}.visual svg{display:block;width:100%;height:min(53vh,510px);overflow:visible}.aside{display:grid;gap:26px;align-content:center}.aside p{font-size:18px}.muted{color:var(--muted)}.accent{color:var(--accent)}.cyan{color:var(--cyan)}.small{font-size:14px}.eyeline{font-size:13px;color:var(--muted);margin-bottom:8px}.large{font-size:clamp(44px,5.7vw,83px);line-height:1.04;font-weight:500;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.large em{font-size:20px;font-style:normal;letter-spacing:0;color:var(--muted)}.call{font-size:26px;line-height:1.3}.aside .call{font-size:25px}.caption{font-size:13px;color:var(--muted);margin-top:10px}.code{font:14px/1.55 Consolas,monospace;color:var(--cyan);padding-top:15px;border-top:1px solid var(--line);white-space:pre-wrap;overflow-wrap:anywhere}.block{display:grid;gap:13px}.divider{border-top:1px solid var(--line);padding-top:19px}.tag{display:inline-block;font-size:13px;color:var(--accent);padding:5px 0}.bottom-note{color:var(--muted);font-size:14px;padding-top:18px;max-width:85ch}.equation{font-size:clamp(30px,3.5vw,50px);letter-spacing:-.025em;font-variant-numeric:tabular-nums;white-space:nowrap}.equation b{font-weight:500;color:var(--accent)}.equation i{color:var(--cyan);font-style:normal}.equation.small-eq{font-size:30px}.table{border-collapse:collapse;width:100%;font-size:21px;text-align:left}.table th{color:var(--muted);font-size:13px;font-weight:400;padding:0 20px 16px}.table td{padding:22px 20px;border-top:1px solid var(--line);vertical-align:top}.table th:first-child,.table td:first-child{padding-left:0}.table td:last-child{padding-right:0}.table .chosen td{color:var(--accent)}.table .chosen td:first-child:before{content:"→ ";color:var(--accent)}.table .sub{display:block;font-size:14px;color:var(--muted);margin-top:5px}.table-wrap{max-width:1250px;margin:20px auto 0}.table-wrap .caption{margin-top:25px}.matrix{display:grid;grid-template-columns:35px repeat(4,1fr);gap:6px;max-width:520px;margin:0 auto;font-variant-numeric:tabular-nums}.matrix span{min-width:0;min-height:60px;display:flex;align-items:center;justify-content:center;font-size:35px}.matrix .axis{font-size:16px;color:var(--muted)}.matrix .zero{color:var(--dim)}.matrix .focus{color:var(--bg);background:var(--accent);border-radius:3px;font-weight:600}.matrix-shell{padding:24px 35px 25px;position:relative}.matrix-shell:before,.matrix-shell:after{content:"";position:absolute;top:65px;bottom:25px;width:12px;border:2px solid var(--line)}.matrix-shell:before{left:12px;border-right:0}.matrix-shell:after{right:12px;border-left:0}.matrix-title{text-align:center;font-size:14px;color:var(--muted);margin-bottom:12px}.morph{display:grid;grid-template-columns:1fr 55px 1.15fr;gap:15px;align-items:center}.morph .visual svg{height:min(49vh,400px)}.morph-arrow{font-size:39px;color:var(--accent);text-align:center}.morph .matrix span{font-size:30px;min-height:49px}.morph .matrix .axis{font-size:15px}.morph-caption{max-width:900px;margin:22px auto 0;display:flex;gap:26px;align-items:center;justify-content:center;font-size:20px}.morph-caption strong{color:var(--accent);font-weight:500}.edge{fill:none;stroke:var(--line);stroke-width:2}.edge.active{stroke:var(--accent);stroke-width:4}.edge.done{stroke:var(--cyan);stroke-width:3.5}.edge.inverse{stroke:var(--warm);stroke-width:3.5;stroke-dasharray:8 7}.node{fill:var(--bg);stroke:var(--dim);stroke-width:1.7}.node.reached{stroke:var(--accent);fill:#253424}.graph-label{font:22px "Segoe UI",sans-serif;fill:var(--muted);paint-order:stroke;stroke:var(--bg);stroke-width:7;stroke-linejoin:round}.graph-label.on{fill:var(--accent)}.node-text{font:600 24px "Segoe UI",sans-serif;fill:var(--text)}.edge-math rect{fill:var(--accent);rx:3}.edge-math text{font:23px "Segoe UI",sans-serif;fill:var(--ink);stroke:none}.edge-math .final{font-weight:700}.legend{display:flex;gap:28px;color:var(--muted);font-size:13px}.legend span:before{content:"";display:inline-block;width:22px;height:3px;vertical-align:middle;margin-right:8px;background:var(--accent)}.legend span:last-child:before{background:var(--cyan)}.rail{display:flex;gap:5px;max-width:900px;margin:8px 0 20px}.rail span{padding:8px 13px;font-size:13px;color:var(--dim);border-bottom:2px solid var(--line)}.rail .now{color:var(--accent);border-color:var(--accent)}.rail .passed{color:var(--cyan);border-color:var(--cyan)}.legend-label{font-size:12px;fill:var(--muted)}.route-strip{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin:22px 0 5px}.route-stop{flex:1;position:relative;border-top:2px solid var(--line);padding-top:13px}.route-stop b{font-size:30px;font-weight:500}.route-stop span{font-size:14px;color:var(--muted);display:block;margin-top:3px}.route-stop:last-child{color:var(--accent)}.state-label{font-size:16px;color:var(--accent);padding-bottom:18px}.candidate{display:grid;grid-template-columns:1fr auto;gap:20px;padding:20px 0;border-top:1px solid var(--line)}.candidate.selected{color:var(--accent)}.candidate p{font-size:22px}.candidate span{color:var(--muted);font-size:14px}.candidate b{font-size:40px;font-weight:500}.closings{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}.closing{border-top:1px solid var(--line);padding-top:18px}.closing.win{color:var(--accent)}.closing .equation{font-size:30px;margin-top:8px}.file-story{display:grid;grid-template-columns:.7fr 1.6fr;gap:90px;align-items:center;min-height:46vh}.file-name{font-size:clamp(35px,4vw,60px);line-height:1.12;letter-spacing:-.025em}.file-name small{display:block;font-size:14px;color:var(--muted);margin-top:16px}.data-line{display:grid;grid-template-columns:36px 1fr 1fr;gap:15px;align-items:center;border-top:1px solid var(--line);padding:21px 0}.data-line>span:first-child{color:var(--dim);font-size:13px}.data-line code{font-size:14px;color:var(--cyan)}.results{display:grid;grid-template-columns:repeat(4,1fr);gap:35px;margin-top:50px}.result{padding-top:26px;border-top:1px solid var(--accent)}.result .large{font-size:72px;margin:24px 0 18px}.result .title{font-size:18px;color:var(--muted)}.result p{font-size:17px}.cover{display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:35px;min-height:70vh}.cover h1{font-size:clamp(58px,7.2vw,100px);max-width:10ch;line-height:.98;letter-spacing:-.04em}.cover h1 span{color:var(--accent)}.cover p{font-size:20px;color:var(--muted);max-width:30ch;margin-top:30px}.cover .visual svg{height:58vh}.cover .cover-meta{font-size:13px;margin-bottom:30px;color:var(--cyan)}.cover-aside{position:relative}.cover-caption{font-size:14px!important;position:absolute;bottom:0;left:15%;margin:0!important}.chapter-title{display:flex;gap:28px;align-items:baseline}.chapter-title .number{font-size:100px;line-height:1;color:var(--accent);font-weight:500;letter-spacing:-.06em}.foot{height:78px;display:flex;align-items:center;gap:25px;position:fixed;bottom:0;left:0;right:0;background:var(--bg);padding:0 4vw;border-top:1px solid var(--line);z-index:5}.foot button{border:1px solid var(--line);border-radius:50%;width:42px;height:42px;background:none;color:var(--text);font-size:20px;display:grid;place-items:center}.foot button:hover:not(:disabled){background:var(--accent);color:var(--bg);border-color:var(--accent)}.foot button:disabled{opacity:.25;cursor:default}.foot .next{border-radius:4px;width:auto;padding:0 20px;margin-left:auto;font-size:14px;background:var(--accent);color:var(--ink);border-color:var(--accent)}.foot-center{display:flex;gap:25px;align-items:center}.slide-number{font-size:20px;font-variant-numeric:tabular-nums}.slide-number small{font-size:13px;color:var(--dim)}.substeps{display:flex;gap:5px;align-items:center}.substeps i{display:block;width:18px;height:3px;background:var(--line)}.substeps i.current{background:var(--accent)}.substeps i.past{background:var(--cyan)}.chapter-name{font-size:13px;color:var(--muted)}.source-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 65px;max-width:1150px}.source{padding:17px 0;border-top:1px solid var(--line)}.source a{font-size:18px}.source p{font-size:14px;color:var(--muted);margin-top:8px}.map-key{display:flex;gap:25px;font-size:13px;color:var(--muted)}.map-key span:before{content:"●";color:var(--cyan);margin-right:8px}.map-key span:last-child:before{content:"◆";color:var(--accent)}.centers-list{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-top:15px}.center-item{padding-top:15px;border-top:1px solid var(--line);font-size:16px;color:var(--muted)}.center-item strong{font-size:27px;display:block;color:var(--text);font-weight:500}.center-item.active{border-color:var(--accent)}.center-item.active strong{color:var(--accent)}
+@media(min-width:900px){main{padding-bottom:88px}.aside .equation{font-size:32px;white-space:normal}.data-line code{overflow-wrap:anywhere}}
+@media(min-width:900px) and (max-height:900px){.top{height:54px}main{padding-top:5px}.head{min-height:85px;margin-bottom:10px}h2{font-size:37px}.head .lead{font-size:16px}.visual svg{height:48vh}.aside{gap:19px}.aside p{font-size:16px}.aside .call{font-size:22px}.matrix span{min-height:52px}.rail{margin-top:0;margin-bottom:10px}.code{font-size:12px}.large{font-size:62px}.table td{padding-top:17px;padding-bottom:17px}.table{font-size:19px}.equation{font-size:36px}.cover{min-height:70vh}.results{margin-top:25px}.result .large{font-size:60px}.candidate{padding:14px 0}}
+@media(max-width:1000px){.stage-layout{grid-template-columns:1fr 250px;gap:25px}.stage-layout.wide-aside{grid-template-columns:1fr 290px}.head .lead{max-width:26ch;font-size:16px}.table{font-size:18px}.results{gap:18px}.result .large{font-size:53px}.equation{font-size:32px}.aside .call{font-size:22px}}
+.path-lane{display:flex;align-items:center;gap:0;min-width:0;padding:28px 0 22px}.path-station{position:relative;flex:0 0 50px;text-align:center}.path-station b{display:grid;place-items:center;width:50px;height:50px;border:1px solid var(--dim);border-radius:50%;font-size:22px;font-weight:500;background:var(--bg)}.path-station.new b{border-color:var(--accent);color:var(--accent);background:#253424}.path-station small{position:absolute;top:58px;left:-10px;width:70px;font-size:12px;color:var(--muted);white-space:nowrap}.path-link{flex:1;min-width:42px;position:relative;height:2px;background:var(--cyan)}.path-link:after{content:"";position:absolute;right:0;top:-4px;width:8px;height:10px;background:var(--cyan);clip-path:polygon(0 0,100% 50%,0 100%)}.path-link span{position:absolute;left:0;right:0;top:-28px;text-align:center;font-size:17px;color:var(--cyan)}.path-link.new{background:var(--accent)}.path-link.new:after{background:var(--accent)}.path-link.new span{color:var(--accent)}.path-option{padding:16px 0 25px;border-top:1px solid var(--line)}.path-option-head{display:flex;justify-content:space-between;gap:20px;align-items:baseline}.path-option-head .cost{font-size:30px;font-variant-numeric:tabular-nums}.path-option-head .status{font-size:14px;color:var(--muted)}.path-option.keep .cost,.path-option.keep .status{color:var(--accent)}.path-option.reject .cost,.path-option.reject .status{color:var(--warm)}.path-option.reject .path-link{background:var(--warm)}.path-option.reject .path-link span{color:var(--warm)}.path-option.reject .path-link:after{background:var(--warm)}.hk-state{display:flex;gap:25px;align-items:center;padding:12px 0 20px;color:var(--muted);font-size:15px}.hk-state strong{color:var(--accent);font-weight:500}.hk-column-title{font-size:15px;color:var(--cyan);margin-bottom:10px}.hk-branches{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}.hk-branches .path-station{flex-basis:40px}.hk-branches .path-station b{width:40px;height:40px;font-size:18px}.hk-branches .path-station small{top:46px;left:-15px}.hk-branches .path-link{min-width:18px}.hk-branches .path-option{padding-top:13px;padding-bottom:20px}.hk-branches .path-option-head .cost{font-size:24px}.hk-branches .path-option-head .status{font-size:12px}.hk-strip{display:flex;flex-wrap:wrap;gap:20px;align-items:center;padding:20px 0;font-size:30px;color:var(--accent)}.hk-strip span{min-width:60px;padding:8px 12px;text-align:center;border-bottom:2px solid var(--accent)}.hk-strip i{font-style:normal;color:var(--dim)}.hk-mini-table{font-size:16px}.hk-mini-table td{padding-top:13px;padding-bottom:13px}.hk-storage{font:17px/1.65 Consolas,monospace;color:var(--cyan);padding:16px 0;border-top:1px solid var(--line)}.hk-full{max-width:1050px;margin:auto}.hk-columns{display:grid;grid-template-columns:1fr 1fr;gap:55px}.hk-column-title strong{font-size:24px;color:var(--text);display:block;margin-top:5px}
+@media(min-width:900px) and (max-height:900px){.path-option{padding-top:10px;padding-bottom:18px}.path-lane{padding-top:25px;padding-bottom:19px}.hk-state{padding-bottom:12px}.hk-storage{font-size:15px}.hk-branches{gap:25px}.hk-branches .path-option-head .cost{font-size:23px}}
+.problem-intro{display:grid;grid-template-columns:1.35fr 1fr;gap:80px;align-items:start;margin-top:45px}.problem-intro .context{font-size:25px;line-height:1.5;max-width:36ch}.problem-intro .requirement{font-size:30px;line-height:1.3;color:var(--accent);margin-top:28px;max-width:29ch}.problem-output{border-top:1px solid var(--accent);padding-top:22px}.problem-output p{font-size:23px;line-height:1.5;margin-top:15px}.problem-output .example-format{font:23px/1.5 Consolas,monospace;color:var(--cyan);margin-top:22px}.input-slide{display:grid;grid-template-columns:1.1fr 1fr;gap:70px;align-items:center;min-height:44vh}.input-raw{font:36px/1.65 Consolas,"Courier New",monospace;white-space:pre;margin:0;padding:15px 0;color:var(--text)}.input-meta{font-size:15px;color:var(--cyan);margin-bottom:12px}.input-explanation{display:grid;gap:27px}.input-explanation p{font-size:22px;line-height:1.45}.input-explanation strong{font-weight:500;color:var(--accent)}.input-point{font:28px/1.4 Consolas,monospace;color:var(--accent)}
+@media(min-width:900px) and (max-height:900px){.problem-intro{margin-top:25px;gap:65px}.problem-intro .context{font-size:23px}.problem-intro .requirement{font-size:28px}.problem-output p{font-size:21px}.input-raw{font-size:31px;line-height:1.5}.input-explanation p{font-size:21px}}
+@media(max-width:760px){.problem-intro,.input-slide{grid-template-columns:1fr;gap:30px}.problem-intro .context{font-size:21px}.problem-intro .requirement{font-size:25px}.input-raw{font-size:28px}}
+@media(max-width:760px){.stage-layout,.stage-layout.wide-aside,.cover,.file-story{grid-template-columns:1fr}.cover h1{font-size:60px}.cover .visual{display:none}.head{display:block}.head .lead{max-width:50ch;margin-top:15px}.morph{grid-template-columns:1fr}.morph-arrow{display:none}.visual svg{height:340px}.foot{gap:14px}.chapter-name{display:none}.file-story{gap:25px}.table{font-size:14px}.table td,.table th{padding:12px 8px}.results{grid-template-columns:1fr 1fr}.result .large{font-size:50px}.centers-list{grid-template-columns:1fr 1fr}.source-grid{grid-template-columns:1fr}.rail{flex-wrap:wrap}.matrix span{min-height:43px;font-size:28px}}
+@media(prefers-reduced-motion:no-preference){.visual .new-edge{stroke-dasharray:1;stroke-dashoffset:1;animation:connect .65s ease-out forwards}.edge-math{animation:math-in .3s ease-out}.build{animation:build .25s ease-out}@keyframes connect{to{stroke-dashoffset:0}}@keyframes math-in{from{opacity:.5;transform:translateY(4px)}to{opacity:1;transform:none}}@keyframes build{from{opacity:.85}to{opacity:1}}}
+</style>
+</head>
+<body>
+<header class="top"><div><span class="edition">SP2</span> &nbsp;/&nbsp; Algoritmos avanzados</div><div class="top-right"><span id="section-label">Situación problema 2</span><button id="fullscreen">Pantalla completa ↗</button></div></header>
+<main><div id="presentation" aria-live="polite"></div></main>
+<footer class="foot"><button id="previous" aria-label="Paso anterior">←</button><div class="foot-center"><div id="counter" class="slide-number"></div><div id="substeps" class="substeps" aria-label="Avance de la diapositiva"></div><span id="chapter-name" class="chapter-name"></span></div><button id="next" class="next">Avanzar →</button></footer>
+<script>
+
+
+const datasets={
+ assignment:{distance:[[0,16,45,32],[16,0,18,21],[45,18,0,7],[32,21,7,0]],capacity:[[0,48,12,18],[52,0,42,32],[18,46,0,56],[24,36,52,0]],centers:[[200,500],[300,100],[450,150],[520,480]],point:[325,200]},
+ repo:{distance:[[0,5,10,8],[5,0,3,12],[10,3,0,6],[8,12,6,0]],capacity:[[0,10,5,0],[0,0,15,10],[0,0,0,10],[0,0,0,0]],centers:[[1,2],[6,5],[9,9]],point:[5,5]}
+};
+const letter=i=>String.fromCharCode(65+i),copy=m=>m.map(r=>r.slice());
+function heldKarp(m){
+ const n=m.length,full=1<<n,dp=Array.from({length:full},()=>Array(n).fill(Infinity)),from=Array.from({length:full},()=>Array(n).fill(-1));dp[1][0]=0;
+ for(let mask=1;mask<full;mask++){if(!(mask&1))continue;for(let i=0;i<n;i++){if(!(mask&(1<<i))||!Number.isFinite(dp[mask][i]))continue;for(let j=0;j<n;j++){if(mask&(1<<j))continue;const next=mask|(1<<j),cost=dp[mask][i]+m[i][j];if(cost<dp[next][j]){dp[next][j]=cost;from[next][j]=i;}}}}
+ function path(mask,last){if(!Number.isFinite(dp[mask][last]))return [];const p=[];while(last!==-1){p.push(last);const prev=from[mask][last];mask^=1<<last;last=prev;}return p.reverse();}
+ const finals=Array.from({length:n-1},(_,k)=>{const last=k+1;return {last,path:path(full-1,last),partial:dp[full-1][last],back:m[last][0],total:dp[full-1][last]+m[last][0]};});
+ const best=finals.reduce((a,b)=>b.total<a.total?b:a);return {dp,from,path,finals,best};
+}
+function kruskalSteps(m){
+ const n=m.length,parent=Array.from({length:n},(_,i)=>i),selected=[],steps=[];let cost=0;
+ function find(i){return parent[i]===i?i:parent[i]=find(parent[i]);}
+ const edges=[];for(let u=0;u<n;u++)for(let v=u+1;v<n;v++)if(m[u][v]>0)edges.push({u,v,w:m[u][v]});edges.sort((a,b)=>a.w-b.w);
+ function snap(current,text,code){const groups={};for(let i=0;i<n;i++){const r=find(i);if(!groups[r])groups[r]=[];groups[r].push(letter(i));}steps.push({selected:selected.slice(),current,cost,text,code,groups:Object.values(groups).map(g=>'{'+g.join(', ')+'}').join('  ')});}
+ snap(null,'Cada colonia empieza en su propio grupo.','sort(edges.begin(), edges.end(), ...);');
+ for(const e of edges){const a=find(e.u),b=find(e.v);if(a===b){snap(e,letter(e.u)+'–'+letter(e.v)+' se rechaza: cerraría un ciclo.','if (a == b) return false;');continue;}parent[b]=a;selected.push(e);cost+=e.w;snap(e,'Aceptar '+letter(e.u)+'–'+letter(e.v)+': '+e.w+' km. Une dos grupos distintos.','if (dsu.unite(edge.u, edge.v)) {\n    totalWeight += edge.weight;\n    selectedEdges++;\n}');if(selected.length===n-1)break;}
+ snap(null,'Red conectada con '+selected.length+' aristas y '+cost+' km.','if (selectedEdges == n - 1) break;');return {steps,edges,cost};
+}
+function flowSteps(cap){
+ const n=cap.length,r=copy(cap),steps=[{r:copy(r),path:[],before:copy(r),increment:0,total:0,text:'Capacidades originales. BFS empieza en A.'}];let total=0;
+ while(true){const parent=Array(n).fill(-1),queue=[0];parent[0]=0;let head=0;while(head<queue.length&&parent[n-1]===-1){const u=queue[head++];for(let v=0;v<n;v++)if(parent[v]===-1&&r[u][v]>0){parent[v]=u;queue.push(v);if(v===n-1)break;}}
+ if(parent[n-1]===-1)break;const path=[];for(let v=n-1;v!==0;v=parent[v])path.unshift(v);path.unshift(0);let increment=Infinity;for(let i=1;i<path.length;i++)increment=Math.min(increment,r[path[i-1]][path[i]]);const before=copy(r);for(let i=1;i<path.length;i++){const u=path[i-1],v=path[i];r[u][v]-=increment;r[v][u]+=increment;}total+=increment;steps.push({r:copy(r),path,before,increment,total,parent,text:path.map(letter).join(' → ')+': enviar '+increment+'. Total '+total+'.'});}
+ steps.push({r:copy(r),path:[],before:copy(r),increment:0,total,text:'No hay otro camino con capacidad disponible. Flujo máximo alcanzado.'});return {steps,total};
+}
+function nearestDistances(centers,p){return centers.map(c=>Math.hypot(c[0]-p[0],c[1]-p[1]));}
+
+
+const example=datasets.assignment,D=example.distance,C=example.capacity,P=example.centers,Q=example.point;
+const exact=heldKarp(D),tree=kruskalSteps(D),network=flowSteps(C),distances=nearestDistances(P,Q);
+const deck=[];
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const route=p=>p.map(letter).join(' → ');
+const L=(label,body)=>'<div class="block"><div class="eyeline">'+label+'</div>'+body+'</div>';
+const big=(n,u='')=>'<div class="large">'+n+(u?' <em>'+u+'</em>':'')+'</div>';
+const equation=s=>'<div class="equation">'+s+'</div>';
+const code=s=>'<div class="code">'+esc(s)+'</div>';
+const para=s=>'<p>'+s+'</p>';
+const call=s=>'<p class="call">'+s+'</p>';
+const layout=(visual,aside,wide=false)=>'<div class="stage-layout'+(wide?' wide-aside':'')+'"><div>'+visual+'</div><aside class="aside">'+aside+'</aside></div>';
+function slide(chapter,title,lead,frames){deck.push({chapter,title,lead,frames:frames.map(f=>typeof f==='string'?{html:f}:f)});}
+function comparison(rows,selected=0){return '<div class="table-wrap"><table class="table"><thead><tr><th>Alternativa</th><th>Costo</th><th>Decisión</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr class="'+(i===selected?'chosen':'')+'">'+r.map(x=>'<td>'+x+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';}
+function matrix(m,focus=[]){return '<div class="matrix-shell"><div class="matrix"><span></span>'+m.map((_,i)=>'<span class="axis">'+letter(i)+'</span>').join('')+m.map((r,u)=>'<span class="axis">'+letter(u)+'</span>'+r.map((v,j)=>'<span class="'+(focus.some(p=>p[0]===u&&p[1]===j)?'focus':v===0?'zero':'')+'">'+v+'</span>').join('')).join('')+'</div></div>';}
+const baseEdges=[];for(let u=0;u<4;u++)for(let v=u+1;v<4;v++)baseEdges.push([u,v,D[u][v]]);
+const forward=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
+const same=(p,q)=>p[0]===q[0]&&p[1]===q[1];
+let chartId=0;
+function plot(edges,o={}){
+ const points=o.two?[[140,230],[590,230]]:[[100,100],[550,100],[100,385],[550,385]];
+ const chosen=o.chosen||[],focus=o.focus||[],math=o.math||[],arrow='arrow'+(++chartId);
+ let svg='<div class="visual"><svg viewBox="0 0 760 500" role="img" aria-label="'+(o.label||'Grafo del ejemplo')+'"><title>'+ (o.label||'Grafo del ejemplo')+'</title><defs><marker id="'+arrow+'" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="context-stroke"/></marker></defs>';
+ const labels={'0,1':[325,75],'0,2':[65,250],'0,3':[286,208],'1,2':[372,292],'1,3':[590,250],'2,3':[325,420]};
+ for(const e of edges){const u=e[0],v=e[1],[x1,y1]=points[u],[x2,y2]=points[v],dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy),ux=dx/len,uy=dy/len;
+ const active=focus.some(p=>same(p,e)),done=chosen.some(p=>same(p,e)),reverse=o.inverse&&same(o.inverse,e),both=edges.some(a=>a[0]===v&&a[1]===u);
+ const nx=-uy,ny=ux,mx=(x1+x2)/2,my=(y1+y2)/2;
+ const path=both?'M'+(x1+ux*31)+' '+(y1+uy*31)+' Q'+(mx+nx*75)+' '+(my+ny*75)+' '+(x2-ux*33)+' '+(y2-uy*33):'M'+(x1+ux*31)+' '+(y1+uy*31)+' L'+(x2-ux*33)+' '+(y2-uy*33);
+ svg+='<path class="edge '+(reverse?'inverse':active?'active':done?'done':'')+(active&&!reverse&&!math.length?' new-edge':'')+'" '+(active&&!reverse&&!math.length?'pathLength="1"':'')+' d="'+path+'" '+(o.directed?'marker-end="url(#'+arrow+')"':'')+'/>';
+ const lp=both?[mx+nx*66,my+ny*66]:o.two?[mx,my-20]:(labels[u+','+v]||[mx,my-18]),calculation=math.find(a=>a.u===u&&a.v===v);
+ if(calculation){const center=u===1&&v===3?[620,245]:u===0&&v===2?[135,245]:lp;svg+='<g class="edge-math"><rect x="'+(center[0]-110)+'" y="'+(center[1]-29)+'" width="220" height="46"/><text text-anchor="middle" x="'+center[0]+'" y="'+(center[1]+2)+'">'+esc(calculation.text)+'</text></g>';}
+ else svg+='<text class="graph-label '+(active?'on':'')+'" text-anchor="middle" x="'+lp[0]+'" y="'+lp[1]+'">'+e[2]+'</text>';
+ }
+ points.forEach(([x,y],i)=>{svg+='<circle class="node '+(chosen.concat(focus).some(p=>p.includes(i))?'reached':'')+'" cx="'+x+'" cy="'+y+'" r="29"/><text class="node-text" text-anchor="middle" x="'+x+'" y="'+(y+8)+'">'+letter(i)+'</text>';});
+ return svg+'</svg></div>';
+}
+function pathPairs(path){const pairs=[];for(let i=1;i<path.length;i++)pairs.push([Math.min(path[i-1],path[i]),Math.max(path[i-1],path[i])]);return pairs;}
+function workingGraph(residual,path=[],math=[]){const focus=[];for(let i=1;i<path.length;i++)focus.push([path[i-1],path[i]]);return plot(forward.map(([u,v])=>[u,v,residual[u][v]]),{focus,math,directed:true,label:'Capacidad disponible de A a D'});}
+function morph(m,focus,visual,caption){return '<div class="morph"><div><div class="matrix-title">Archivo de entrada</div>'+matrix(m,focus)+'</div><div class="morph-arrow">→</div><div>'+visual+'</div></div><div class="morph-caption">'+caption+'</div>';}
+function map(upto=-1,best=-1){
+ const x=v=>150+v*.68,y=v=>425-v*.68;
+ let svg='<div class="visual"><svg viewBox="0 0 760 500" role="img" aria-label="Centrales y nueva contratación, en un plano a escala"><title>Ubicación de centrales</title><path d="M125 55 V425 H560" fill="none" stroke="var(--line)" stroke-width="1.5"/><text class="legend-label" x="560" y="452">x</text><text class="legend-label" x="103" y="57">y</text>';
+ for(let i=0;i<=upto;i++)svg+='<line x1="'+x(Q[0])+'" y1="'+y(Q[1])+'" x2="'+x(P[i][0])+'" y2="'+y(P[i][1])+'" stroke="'+(i===best?'var(--accent)':'var(--line)')+'" stroke-width="'+(i===best?3.5:1.5)+'"/>';
+ P.forEach((p,i)=>{svg+='<circle cx="'+x(p[0])+'" cy="'+y(p[1])+'" r="8" fill="'+(i===best?'var(--accent)':'var(--cyan)')+'"/><text class="graph-label" x="'+(x(p[0])+12)+'" y="'+(y(p[1])-15)+'">C'+(i+1)+'</text>';});
+ svg+='<path d="M'+x(Q[0])+' '+(y(Q[1])-11)+' l11 11 -11 11 -11 -11 Z" fill="var(--accent)"/><text class="graph-label on" x="'+(x(Q[0])+17)+'" y="'+(y(Q[1])+26)+'">Nuevo</text></svg></div>';return svg;
+}
+// Una presentación: cada flecha avanza la historia, nunca cambia los datos.
+slide('Apertura','','',[
+ {type:'cover',html:'<div class="cover"><div><div class="cover-meta">Situación problema 2 / TC2038</div><h1>Situación<br><span>problema 2.</span></h1><p>Conectar colonias. Recorrerlas.<br>Transmitir datos. Acercar el servicio.</p></div><div class="cover-aside">'+plot(baseEdges,{chosen:[[0,1],[1,2],[2,3]]})+'<p class="cover-caption">Ejemplo de la consigna · 4 colonias</p></div></div>'}
+]);
+slide('Entrada','Lectura del archivo y llamadas a los algoritmos','main lee los bloques en orden y llama a cada algoritmo.',[
+ '<div class="file-story"><div class="file-name">input.txt<small>Ruta actual: input/input.txt</small><div class="code">ifstream file(inputPath);</div></div><div><div class="data-line"><span>01</span><span>Distancias N × N</span><code>kruskal(distances, N)</code></div><div class="data-line"><span>02</span><span>Las mismas distancias</span><code>solver.held_karp(N, distances)</code></div><div class="data-line"><span>03</span><span>Capacidades N × N</span><code>edmondsKarp(capacities, 0, N-1)</code></div><div class="data-line"><span>04</span><span>K centrales y punto nuevo</span><code>near.nearest_central(centers, newLocation)</code></div></div></div><div class="bottom-note">Un solo caso durante toda la exposición: el ejemplo del enunciado. Las coordenadas se leen como x y.</div>'
+]);
+slide('Cableado','Problema 1: matriz de distancias y grafo','Queremos conectar todas las colonias con la menor longitud total.',[
+ morph(D,[[0,1],[1,0]],plot([[0,1,16]],{focus:[[0,1]],two:true}),'<strong>16 km</strong> aparece dos veces en la matriz, pero representa un solo cable A–B.'),
+ layout(plot(baseEdges),L('El grafo completo',call('4 colonias.<br>6 conexiones posibles.'))+L('Lo que buscamos',para('Una red conectada, sin ciclos y de costo mínimo.'))+code('Matriz simétrica → aristas no dirigidas.'))
+]);
+slide('Cableado','Problema 1: cableado mínimo con Kruskal','La conexión más barata es segura si une componentes distintas.',[
+ comparison([['Kruskal · actual','O(N² + E log E)','6 aristas: fácil de ordenar y verificar.'],['Prim sobre matriz','O(N²)','Mejor cota si la matriz crece y es densa.'],['Prim con heap','O((N + E) log N)','Conviene con listas y pocas conexiones.']])+ '<p class="bottom-note">N = colonias; E = aristas. Kruskal incluye extraer las aristas de la matriz.</p>',
+ ...tree.steps.filter(s=>s.current&&s.selected.includes(s.current)).map((s,i)=>({
+   label:['C–D · 7 km','A–B · 16 km','B–C · 18 km'][i],
+   html:layout(plot(baseEdges,{chosen:s.selected.slice(0,-1).map(e=>[e.u,e.v]),focus:[[s.current.u,s.current.v]]}),
+     L('Conexión que agregamos',call(letter(s.current.u)+'–'+letter(s.current.v)+' <span class="accent">/ '+s.current.w+' km</span>'))+
+     L('Cable acumulado',big(s.cost,'km'))+
+     para(['Une C y D: es la arista más barata.','Une A y B. Ahora hay dos grupos conectados.','Une los dos grupos. Con 3 aristas ya conectamos las 4 colonias.'][i])+
+     code(i===2?'selectedEdges == N - 1 → terminar':'dsu.unite(u, v)\n// Aceptar solo si une grupos distintos.'))+'<div class="legend"><span>Conexión actual</span><span>Cables ya elegidos</span></div>'
+ }))
+]);
+slide('Recorrido','Problema 2: ruta de correspondencia','Visitar cada colonia exactamente una vez y regresar al origen.',[
+ morph(D,[[0,3],[3,0]],plot(baseEdges,{focus:[[0,3]]}),'<strong>32 km</strong> es la conexión A–D. Todas las distancias estarán disponibles para el recorrido.'),
+ comparison([['Held-Karp · actual','O(N² 2ᴺ)','Solución exacta. Suficiente para N = 4.'],['Fuerza bruta','O(N!)','Exacta, pero repite más trabajo.'],['Voraz por aristas','O(N² log N)','Más rápido, sin garantizar la ruta mínima.']])+'<p class="bottom-note">main llama a held_karp. La heurística existe por separado; no hay un cambio automático entre ambas.</p>'
+]);
+function routeCost(path){let cost=0;for(let i=1;i<path.length;i++)cost+=D[path[i-1]][path[i]];return cost;}
+function pathLane(path,extend=false){
+ let cost=0,html='<div class="path-lane" role="img" aria-label="'+route(path)+', '+routeCost(path)+' kilómetros">';
+ path.forEach((node,i)=>{
+   if(i){const w=D[path[i-1]][node];cost+=w;html+='<div class="path-link '+(extend&&i===path.length-1?'new':'')+'"><span>+'+w+'</span></div>';}
+   html+='<div class="path-station '+(extend&&i===path.length-1?'new':'')+'"><b>'+letter(node)+'</b><small>'+cost+' km</small></div>';
+ });
+ return html+'</div>';
+}
+function pathOption(path,status='',kind='',extend=false){return '<div class="path-option '+kind+'"><div class="path-option-head"><span class="status">'+status+'</span><span class="cost">'+routeCost(path)+' km</span></div>'+pathLane(path,extend)+'</div>';}
+function hkState(visited,end){return '<div class="hk-state"><span>Visitadas: <strong>{'+visited.map(letter).join(', ')+'}</strong></span><span>Última: <strong>'+letter(end)+'</strong></span></div>';}
+const levelThree=[[[0,1,2],[0,1,3]],[[0,2,1],[0,2,3]],[[0,3,1],[0,3,2]]];
+slide('Recorrido','Held-Karp: construcción de caminos parciales','Extendemos cada camino hacia una colonia que todavía no se ha visitado.',[
+ {label:'Inicio en A',html:layout('<div class="hk-full">'+hkState([0],0)+pathOption([0],'Estado inicial','keep')+'</div>',
+   L('Costo inicial',big(0,'km'))+para('Solo se ha visitado A. No se ha tomado ninguna conexión.')+code('dp[1][0] = 0;\n// Visitadas: {A}. Última: A.'))},
+ {label:'Agregar la primera colonia',html:layout('<div>'+[1,2,3].map(j=>pathOption([0,j],'Visitadas {A,'+letter(j)+'}; última '+letter(j),'',true)).join('')+'</div>',
+   L('Tres estados diferentes',call('Conservamos los tres.'))+para('Aunque A→B es más barato, los otros caminos visitan colonias distintas. No se pueden descartar por ese motivo.')+code('Para cada j no visitada:\n    cost = dp[mask][i] + matrix[i][j];'))},
+ {label:'Agregar la segunda colonia',html:'<div class="hk-branches">'+levelThree.map((paths,i)=>'<div><div class="hk-column-title">Estado anterior<strong>A → '+letter(i+1)+' · '+D[0][i+1]+' km</strong></div>'+paths.map(p=>pathOption(p,'Agregar '+letter(p[2]),'',true)).join('')+'</div>').join('')+'</div><p class="bottom-note">Cada estado se amplía con las colonias que faltan. Los números debajo de cada nodo muestran el costo acumulado.</p>'},
+ {label:'Comparar solo estados equivalentes',html:layout('<div>'+pathOption([0,1,3],'Visitadas {A,B,D}; última D')+pathOption([0,3,1],'Visitadas {A,B,D}; última B')+'</div>',
+   L('37 y 53 se conservan',call('Mismas visitadas.<br>Distinto final.'))+para('Desde D y desde B, las conexiones siguientes tienen costos distintos. Todavía no representan el mismo estado.')+code('Estado = (visitadas, última)\n// Se compara dentro del mismo estado.'))}
+]);
+const partialToC=exact.path(13,2),partialToD=exact.path(13,3);
+const candidate57=partialToC.concat(1),candidate73=partialToD.concat(1);
+slide('Recorrido','Held-Karp: conservar o descartar un camino','Ahora ambos candidatos visitan A, B, C y D y terminan en B.',[
+ {label:'Primer candidato: guardar 57',html:layout('<div>'+hkState([0,2,3],2)+pathOption(partialToC,'Estado previo: termina en C')+pathOption(candidate57,'Agregar B: nuevo estado {A,B,C,D}, final B','keep',true)+'</div>',
+   L('Extensión desde C',equation('39 + 18 = <b>57</b>'))+para('El estado completo con final B aún no tiene costo. Guardamos 57 y recordamos que llegamos desde C.')+code('dp[15][1] = 57;\nfrom[15][1] = 2; // C'))},
+ {label:'Segundo candidato: descartar 73',html:layout('<div>'+hkState([0,1,2,3],1)+pathOption(candidate57,'Camino ya guardado','keep')+pathOption(candidate73,'Nuevo candidato: 52 + 21 = 73','reject',true)+'</div>',
+   L('Comparación del mismo estado',equation('73 &gt; <b>57</b>'))+para('El candidato que llega desde D cuesta más. Se descarta; el costo guardado y el anterior C no cambian.')+code('if (cost < dp[nextMask][j]) {\n    // Guardar solo si mejora.\n}\n// 73 < 57 es falso.'))},
+ {label:'Por qué el descarte es seguro',html:layout('<div>'+hkState([0,1,2,3],1)+pathOption(candidate57,'Se conserva: menor costo al llegar a B','keep')+pathOption(candidate73,'Se descarta: mayor costo al llegar a B','reject')+'</div>',
+   L('Mismas opciones para continuar',call('A ambos solo les falta B→A.'))+equation('57 + 16 = <b>73</b>')+equation('73 + 16 = 89')+para('Añadir la misma conexión no puede hacer que el camino más caro sea mejor.'))}
+]);
+const closingFrames=exact.finals.map(f=>({
+ label:'Evaluar cierre desde '+letter(f.last),
+ html:layout('<div>'+hkState([0,1,2,3],f.last)+pathOption(f.path.concat(0),'Agregar el regreso a A',f.total===73?'keep':'',true)+'</div>',
+   L('Costo parcial + regreso',equation(f.partial+' + '+f.back+' = <b>'+f.total+'</b>'))+
+   para('Este es el mejor camino que termina en '+letter(f.last)+'. Ahora añadimos su conexión al origen.')+
+   code('cost = dp[FULL - 1][i] + matrix[i][0];'))+
+   '<div class="closings">'+exact.finals.map(g=>'<div class="closing '+(g.last===f.last?'win':'')+'"><div class="eyeline">Final '+letter(g.last)+'</div><div class="equation">'+g.partial+' + '+g.back+' = <b>'+g.total+'</b></div></div>').join('')+'</div>'
+}));
+closingFrames.push({label:'Seleccionar el costo mínimo',html:layout(plot(baseEdges,{chosen:pathPairs(exact.best.path.concat(0))}),
+ L('Menor ciclo completo',big(73,'km'))+para('Los cierres desde B y D empatan. El ciclo revisa B primero y actualiza solo ante un costo menor: conserva B.')+
+ code('if (cost < best) {\n    best = cost;\n    last = i;\n}'))});
+slide('Recorrido','Held-Karp: cierre del ciclo y selección del mínimo','Los costos parciales todavía no incluyen el regreso a A.',closingFrames);
+const reconstruction=[],backwards=[exact.best.last];
+let reconstructionMask=15,reconstructionNode=exact.best.last;
+while(reconstructionNode!==0){
+ const previous=exact.from[reconstructionMask][reconstructionNode];
+ backwards.push(previous);
+ const letters=backwards.map(letter);
+ reconstruction.push({label:'Anterior de '+letter(reconstructionNode)+': '+letter(previous),html:layout(
+   '<div><div class="eyeline">Seguimos from desde el final B hacia el origen</div><div class="hk-strip">'+letters.map((l,i)=>(i?'<i>←</i>':'')+'<span>'+l+'</span>').join('')+'</div><p class="caption">La flecha indica quién llegó antes. '+letter(previous)+' fue anterior a '+letter(reconstructionNode)+'.</p></div>',
+   L('Consulta del anterior',call('from['+reconstructionMask+']['+reconstructionNode+'] = '+previous))+
+   para('Guardamos '+letter(previous)+' y seguimos consultando sus anteriores, quitando la última colonia del conjunto.')+
+   code('prev = from[mask][cur];\nmask ^= (1 << cur);\ncur = prev;'))});
+ reconstructionMask^=1<<reconstructionNode;
+ reconstructionNode=previous;
+}
+reconstruction.push({label:'Invertir la secuencia y regresar a A',html:layout(
+ '<div>'+pathOption(exact.best.path.concat(0),'Recorrido final en orden de visita','keep',true)+'</div>',
+ L('Distancia total',big(73,'km'))+para('La reconstrucción produjo B, C, D, A. La invertimos y añadimos el regreso a A.')+
+ code('reverse(path.begin(), path.end());\n// A → D → C → B. main añade → A.'))});
+slide('Recorrido','Held-Karp: reconstrucción de la ruta final','from guarda la colonia anterior del camino que se conservó.',reconstruction);
+slide('Flujo','Problema 3: matriz de capacidades y grafo dirigido','La capacidad de A→B no tiene por qué ser igual a la de B→A.',[
+ morph(C,[[0,1],[1,0]],plot([[0,1,48],[1,0,52]],{two:true,directed:true,focus:[[0,1],[1,0]]}),'<strong>A→B: 48</strong><span>≠</span><strong>B→A: 52</strong>'),
+ layout(workingGraph(C),L('Origen → destino',big('A → D'))+para('Queremos enviar la mayor cantidad posible, repartida entre varios caminos.')+para('<span class="muted">Mostramos las direcciones de avance. Las inversas siguen guardadas en la matriz.</span>'))
+]);
+slide('Flujo','Problema 3: selección del algoritmo de flujo máximo','Busca primero menos conexiones. Después calcula cuánto cabe.',[
+ comparison([['Edmonds-Karp · actual','O(N³ E), nuestra matriz','BFS sencillo y suficiente para estos 4 nodos.'],['Ford-Fulkerson con enteros','O(E · F)','El tiempo depende del valor F del flujo.'],['Dinic con listas','O(N² E), general','Mejor candidato para redes grandes.']])+
+ '<p class="bottom-note">Con listas, la cota habitual de Edmonds-Karp es O(N E²). Nuestro BFS recorre la matriz: O(N²) por búsqueda.</p>'
+]);
+const increases=network.steps.filter(s=>s.increment>0);
+const pathReasons=[
+ 'El camino directo tiene una sola conexión. BFS lo encuentra primero.',
+ 'El directo está lleno. B y C permiten caminos de dos conexiones; el ciclo revisa B antes que C.',
+ 'B→D está llena. Ahora llegamos a D pasando por C.',
+ 'A→C y B→D están llenas. Solo queda salir por B y continuar por C.'
+];
+function flowRail(i){return '<div class="rail">'+['Directo','Por B','Por C','Por B y C'].map((name,j)=>'<span class="'+(j===i?'now':j<i?'passed':'')+'">'+(j+1)+' / '+name+'</span>').join('')+'</div>';}
+const flowFrames=[];
+increases.forEach((s,i)=>{
+ const capacities=[];for(let k=1;k<s.path.length;k++)capacities.push(s.before[s.path[k-1]][s.path[k]]);
+ flowFrames.push({label:'Camino '+(i+1)+' · elegir',html:flowRail(i)+layout(workingGraph(s.before,s.path),
+   L('Camino encontrado',call(route(s.path)))+
+   para(pathReasons[i])+
+   L('Cuello de botella',equation(capacities.length===1?'<b>'+s.increment+'</b>': 'mín('+capacities.join(', ')+') = <b>'+s.increment+'</b>'))+
+   para('<span class="muted">Esa cantidad debe caber en todas las conexiones del camino.</span>'))});
+ const math=[];for(let k=1;k<s.path.length;k++){const u=s.path[k-1],v=s.path[k];math.push({u,v,text:s.before[u][v]+' − '+s.increment+' = '+s.r[u][v]});}
+ flowFrames.push({label:'Camino '+(i+1)+' · enviar '+s.increment,html:flowRail(i)+layout(workingGraph(s.r,s.path,math),
+   L('Enviamos por todo el camino',big(s.increment,'unidades'))+
+   L('Flujo acumulado en D',equation((s.total-s.increment)+' + <i>'+s.increment+'</i> = <b>'+s.total+'</b>'))+
+   para('Las restas sobre las conexiones muestran lo que queda disponible.')+
+   para('<span class="cyan">El envío se suma una sola vez al total.</span>'))});
+});
+flowFrames.push({label:'Resultado · 78',html:layout(workingGraph(network.steps.at(-1).r),
+ L('Flujo máximo',big(78,'unidades'))+
+ L('Toda la salida de A se agotó',equation('48 + 12 + 18 = <b>78</b>'))+
+ para('BFS ya no puede salir de A. Enviamos 78 y no puede salir más de 78: el resultado es máximo.'))});
+slide('Flujo','Problema 3: flujo máximo con Edmonds-Karp','Seguimos el mismo grafo. Cada avance muestra una decisión y su efecto.',flowFrames);
+slide('Flujo','Edmonds-Karp: capacidades residuales','Enviar por A→B crea permiso para cancelar ese envío después.',[
+ layout(plot([[0,1,16],[1,0,84]],{two:true,directed:true,chosen:[[0,1]],inverse:[1,0]}),
+ L('Capacidad de ida restante',equation('48 − 32 = <b>16</b>'))+
+ L('Capacidad inversa',equation('52 + <i>32</i> = <b>84</b>'))+
+ para('52 era la capacidad original. Las 32 adicionales permiten deshacer lo enviado por A→B.')+
+ code('residual[u][v] -= increment;\nresidual[v][u] += increment;'),true)+
+ '<div class="bottom-note">No es cable nuevo. Es un permiso para reorganizar el flujo. En este caso no necesitamos utilizarlo.</div>'
+]);
+slide('Centrales','Problema 4: coordenadas de las centrales','Buscamos la central más cercana a la nueva contratación: (325, 200).',[
+ layout('<div class="matrix-title">Ubicación de las centrales</div><table class="table"><thead><tr><th>Central</th><th>x</th><th>y</th></tr></thead><tbody>'+P.map((p,i)=>'<tr><td>C'+(i+1)+'</td><td>'+p[0]+'</td><td>'+p[1]+'</td></tr>').join('')+'</tbody></table>',
+ L('Punto nuevo',big('(325,<br>200)'))+para('No hay una central por colonia: son conjuntos independientes.')),
+ layout(map(),L('Una consulta geográfica',call('La cercanía se mide en el plano.'))+para('Usamos distancia euclidiana, no las distancias de cableado.')+L('Representación','<div class="map-key"><span>Central</span><span>Nuevo punto</span></div>'))
+]);
+slide('Centrales','Problema 4: selección del algoritmo de cercanía','La búsqueda lineal encuentra el mínimo exacto sin construir un índice.',[
+ comparison([['Búsqueda lineal · actual','O(K), sin preparación','Ideal para cuatro centrales y una consulta.'],['Árbol k-d','O(K log K) de construcción','Muchas consultas. Peor caso: O(K) por consulta.'],['Voronoi + localización','O(K log K) / O(log K)','Muchas consultas sobre puntos estables.']])+
+ '<p class="bottom-note">Ordenar todas las distancias requiere O(K log K). Para obtener solo el mínimo, basta conservar la menor.</p>'
+]);
+slide('Centrales','Problema 4: cálculo de la central más cercana','Cada conexión se calcula con la misma fórmula de distancia euclidiana.',[
+ ...P.map((p,i)=>{
+ let best=0;for(let j=1;j<=i;j++)if(distances[j]<distances[best])best=j;
+ return {label:'Central '+(i+1)+' de 4',html:layout(map(i,best),
+   L('Distancia a C'+(i+1),big(distances[i].toFixed(2)))+
+   para(i===0?'Empezamos con C1 como referencia.':i===1?'103.08 es menor que 325. Reemplazamos C1 por C2.':'No mejora 103.08. Conservamos C2.')+
+   L('Mejor hasta ahora',call('<span class="accent">C'+(best+1)+' · '+distances[best].toFixed(2)+'</span>'))+
+   code('d = hypot(dx, dy);\nif (d < bestDist) guardar d e índice;'))+
+   '<div class="centers-list">'+P.map((_,j)=>'<div class="center-item '+(j===best?'active':'')+'">C'+(j+1)+'<strong>'+(j<=i?distances[j].toFixed(2):'—')+'</strong></div>').join('')+'</div>'};
+ })
+]);
+slide('Resultados','Resultados del ejemplo de entrada','Resultados del ejemplo de la consigna.',[
+ '<div class="results"><div class="result"><span class="title">Cableado mínimo</span>'+big(41,'km')+'<p>(C,D), (A,B), (B,C)</p></div><div class="result"><span class="title">Recorrido mínimo</span>'+big(73,'km')+'<p>A → D → C → B → A</p></div><div class="result"><span class="title">Flujo máximo</span>'+big(78)+'<p>Unidades de A a D.</p></div><div class="result"><span class="title">Central cercana</span>'+big('103.08')+'<p>C2 · (300, 100)</p></div></div>'
+]);
+slide('Alcance','Complejidad, escalabilidad y cumplimiento','Justificamos la elección según el caso y la representación.',[
+ '<div class="table-wrap"><table class="table"><thead><tr><th>Problema</th><th>Por qué basta aquí</th><th>Si aumenta la escala</th></tr></thead><tbody><tr><td>Cableado</td><td>Solo 6 aristas.</td><td>Prim en matrices densas.</td></tr><tr><td>Recorrido</td><td>Held-Karp con N = 4.</td><td>Limitar N y memoria; solver o aproximación declarada.</td></tr><tr><td>Flujo</td><td>BFS en una red de 4 nodos.</td><td>Listas de vecinos y Dinic.</td></tr><tr><td>Centrales</td><td>4 distancias, una consulta.</td><td>Índice espacial con consultas repetidas.</td></tr></tbody></table></div>',
+ '<div class="table-wrap"><table class="table"><thead><tr><th>Rúbrica</th><th>Evidencia</th><th>Límite o pendiente</th></tr></thead><tbody><tr><td>Funcionamiento</td><td>DSU, estados, residual y geometría.</td><td>Decisiones explicadas con un solo caso.</td></tr><tr><td>Exactitud</td><td>41 · 73 · 78 · 103.08</td><td>TSP asume conexiones utilizables entre todos los pares.</td></tr><tr><td>Estándares</td><td>C++17 y un archivo de entrada.</td><td>El lector usa K y x y; el recorrido imprime números.</td></tr><tr><td>Optimización</td><td>Comparación de costos y escalabilidad.</td><td>No hay límite de N ni cambio automático a la heurística.</td></tr></tbody></table></div>'
+]);
+slide('Referencias','Archivos de implementación y referencias','Las demostraciones visualizan el comportamiento del código actual.',[
+ '<div class="source-grid"><div class="source"><a href="main.cpp">main.cpp</a><p>Lectura e integración de las cuatro soluciones.</p></div><div class="source"><a href="https://algs4.cs.princeton.edu/43mst/" target="_blank" rel="noopener">Princeton · Minimum Spanning Trees</a><p>Kruskal, Prim y propiedad del corte.</p></div><div class="source"><a href="algorithms/tsp.h">algorithms/tsp.h</a><p>Held-Karp exacto; heurística disponible por separado.</p></div><div class="source"><a href="https://doi.org/10.1145/800029.808532" target="_blank" rel="noopener">Held y Karp · Programación dinámica</a><p>Fundamento del recorrido por estados.</p></div><div class="source"><a href="algorithms/edmonds_karp.h">algorithms/edmonds_karp.h</a><p>BFS y actualización de capacidades residuales.</p></div><div class="source"><a href="https://courses.ics.hawaii.edu/ics311_f26/Notes/Topic-20.html" target="_blank" rel="noopener">University of Hawaiʻi · Maximum Flow</a><p>Red residual y caminos aumentantes.</p></div><div class="source"><a href="algorithms/kruskal.h">Kruskal</a> · <a href="algorithms/nearest.h">Central cercana</a><p>Conectividad y distancia euclidiana.</p></div><div class="source"><a href="https://doc.cgal.org/latest/Spatial_searching/index.html" target="_blank" rel="noopener">CGAL · Spatial Searching</a><p>Consultas espaciales y vecinos más cercanos.</p></div></div>'
+]);
+// Antes de resolver cada problema: planteamiento y bloque de entrada.
+function problemStatement(context,requirement,output,format){
+ return '<div class="problem-intro"><div><div class="eyeline">Situación</div><p class="context">'+context+'</p><p class="requirement">'+requirement+'</p></div><div class="problem-output"><div class="eyeline">Salida solicitada</div><p>'+output+'</p><div class="example-format">'+format+'</div></div></div>';
+}
+function rawMatrix(m){return m.map(row=>row.map(v=>String(v).padStart(2,' ')).join('  ')).join('\n');}
+function inputBlock(meta,raw,explanation){
+ return '<div class="input-slide"><div><div class="input-meta">'+meta+'</div><pre class="input-raw">'+esc(raw)+'</pre></div><div class="input-explanation">'+explanation+'</div></div>';
+}
+const problemIntroductions=[
+ {
+   anchor:'Problema 1: matriz de distancias y grafo',chapter:'Cableado',
+   title:'Problema 1: conectar las colonias con fibra óptica',
+   lead:'Las distancias indican por dónde es factible instalar el cableado.',
+   body:problemStatement(
+     'La ciudad está formada por colonias. Cada conexión factible tiene un peso: la distancia en kilómetros entre ambas.',
+     'Encontrar la forma óptima de cablear para que cualesquiera dos colonias puedan compartir información.',
+     'Una lista de conexiones que una todas las colonias con la menor longitud total de cable.',
+     '(A,B), (B,C), …'
+   ),
+   inputTitle:'Problema 1: entrada de distancias',
+   inputLead:'Número de colonias y matriz de distancias del archivo.',
+   input:inputBlock('N = 4 colonias','4\n\n'+rawMatrix(D),
+     L('Matriz de 4 × 4',para('Cada posición indica la distancia entre dos colonias, en <strong>kilómetros</strong>.'))+
+     L('Ejemplo de lectura',para('A–B está a <strong>16 km</strong>. C–D está a <strong>7 km</strong>.')))
+ },
+ {
+   anchor:'Problema 2: ruta de correspondencia',chapter:'Recorrido',
+   title:'Problema 2: reparto de correspondencia',
+   lead:'Se deben entregar estados de cuenta, publicidad, avisos y notificaciones impresos.',
+   body:problemStatement(
+     'Una persona debe visitar todas las colonias para entregar la correspondencia física.',
+     'Encontrar la ruta más corta que visite cada colonia exactamente una vez y regrese a la colonia de origen.',
+     'El orden de visita, incluyendo el regreso. Las colonias se nombran A, B, C y así sucesivamente.',
+     'A → … → A'
+   ),
+   inputTitle:'Problema 2: entrada para calcular la ruta',
+   inputLead:'Se utiliza la misma matriz de distancias del problema anterior.',
+   input:inputBlock('N = 4 · distancias ya leídas',rawMatrix(D),
+     L('Datos compartidos',para('El recorrido utiliza las distancias entre las mismas <strong>cuatro colonias</strong>.'))+
+     L('Sin un bloque adicional',para('La matriz se lee una vez del archivo y también se entrega al algoritmo de correspondencia.')))
+ },
+ {
+   anchor:'Problema 3: matriz de capacidades y grafo dirigido',chapter:'Flujo',
+   title:'Problema 3: flujo máximo de información',
+   lead:'Las capacidades estimadas consideran la interferencia de campos electromagnéticos.',
+   body:problemStatement(
+     'Cada conexión tiene una capacidad máxima de transmisión de datos desde la colonia i hacia la colonia j.',
+     'Calcular cuánta información puede enviarse desde el nodo inicial hasta el nodo final.',
+     'El valor del flujo máximo en la salida estándar, respetando las capacidades de las conexiones.',
+     'A → D · flujo máximo'
+   ),
+   inputTitle:'Problema 3: entrada de capacidades',
+   inputLead:'Segunda matriz de 4 × 4 en el mismo archivo.',
+   input:inputBlock('Capacidades máximas por dirección',rawMatrix(C),
+     L('Origen y destino',para('La fila indica desde dónde se envían datos; la columna indica hacia dónde.'))+
+     L('Ejemplo de lectura',para('<strong>A→B permite 48</strong> unidades; <strong>B→A permite 52</strong>.')))
+ },
+ {
+   anchor:'Problema 4: coordenadas de las centrales',chapter:'Centrales',
+   title:'Problema 4: central más cercana',
+   lead:'Una nueva contratación debe conectarse a una central existente.',
+   body:problemStatement(
+     'Las centrales tienen ubicaciones geográficas. Puede haber colonias sin central y colonias con más de una.',
+     'Identificar la central geográficamente más cercana a la nueva ubicación.',
+     'La distancia más corta entre el punto nuevo y las centrales existentes.',
+     'distancia mínima'
+   ),
+   inputTitle:'Problema 4: entrada de coordenadas',
+   inputLead:'Bloque de centrales y punto nuevo en el mismo archivo.',
+   input:inputBlock('K = 4 centrales · formato leído: x y',
+     '4\n'+P.map(p=>p.join(' ')).join('\n')+'\n\n'+Q.join(' '),
+     L('Centrales existentes',para('Los primeros cuatro pares ubican las centrales en un plano.'))+
+     L('Nueva contratación','<div class="input-point">(325, 200)</div>')+
+     para('El último par es la ubicación que se compara con todas las centrales.'))
+ }
+];
+for(const problem of problemIntroductions){
+ const index=deck.findIndex(s=>s.title===problem.anchor);
+ if(index===-1)throw new Error('No se encontró el segmento: '+problem.anchor);
+ deck.splice(index,0,
+   {chapter:problem.chapter,title:problem.title,lead:problem.lead,frames:[{label:'Planteamiento',html:problem.body}]},
+   {chapter:problem.chapter,title:problem.inputTitle,lead:problem.inputLead,frames:[{label:'Entrada',html:problem.input}]}
+ );
+}
+let page=0,build=0;
+function readHash(){const parts=location.hash.slice(1).split('.').map(Number);page=Math.max(0,Math.min(deck.length-1,(parts[0]||1)-1));build=Math.max(0,Math.min(deck[page].frames.length-1,(parts[1]||1)-1));}
+function render(){
+ const s=deck[page],f=s.frames[build],el=document.getElementById('presentation');
+ el.innerHTML=f.type==='cover'?f.html:'<div class="head"><div><div class="eyebrow">'+s.chapter+(f.label?' / '+f.label:'')+'</div><h2>'+s.title+'</h2></div><p class="lead">'+s.lead+'</p></div><div class="stage build">'+f.html+'</div>';
+ document.getElementById('section-label').textContent=s.chapter;
+ document.getElementById('counter').innerHTML=String(page+1).padStart(2,'0')+' <small>/ '+deck.length+'</small>';
+ document.getElementById('substeps').innerHTML=s.frames.map((_,i)=>'<i class="'+(i===build?'current':i<build?'past':'')+'"></i>').join('');
+ document.getElementById('substeps').setAttribute('aria-label','Paso '+(build+1)+' de '+s.frames.length);
+ document.getElementById('chapter-name').textContent=f.label||s.chapter;
+ document.getElementById('previous').disabled=page===0&&build===0;
+ document.getElementById('next').disabled=page===deck.length-1&&build===s.frames.length-1;
+ document.getElementById('next').textContent=build<s.frames.length-1?'Siguiente paso →':'Siguiente diapositiva →';
+ history.replaceState(null,'','#'+(page+1)+'.'+(build+1));window.scrollTo(0,0);
+}
+function move(delta){
+ if(delta>0){if(build<deck[page].frames.length-1)build++;else if(page<deck.length-1){page++;build=0;}else return;}
+ else{if(build>0)build--;else if(page>0){page--;build=deck[page].frames.length-1;}else return;}
+ render();
+}
+document.getElementById('next').addEventListener('click',()=>move(1));
+document.getElementById('previous').addEventListener('click',()=>move(-1));
+document.addEventListener('keydown',e=>{if(e.altKey||e.ctrlKey||e.metaKey)return;if(['ArrowRight','PageDown'].includes(e.key)||(e.key===' '&&e.target.tagName!=='BUTTON')){e.preventDefault();move(1);}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();move(-1);}if(e.key==='Home'){e.preventDefault();page=0;build=0;render();}if(e.key==='End'){e.preventDefault();page=deck.length-1;build=deck[page].frames.length-1;render();}});
+document.getElementById('fullscreen').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch(e){document.getElementById('fullscreen').textContent='Usa F11';}});
+window.addEventListener('hashchange',()=>{readHash();render();});
+readHash();render();
+</script>
+</body>
+</html>
