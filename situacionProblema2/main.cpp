@@ -1,18 +1,18 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "kruskal.h"
-#include "edmonds_karp.h"
+#include "algorithms/kruskal.h"
+#include "algorithms/edmonds_karp.h"
 #include <utility>
 #include <iomanip>
-#include "tsp.h"
-#include "nearest.h" 
+#include "algorithms/tsp.h"
+#include "algorithms/nearest.h" 
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
     // An optional path selects a test input; input.txt remains the default.
-    const char* inputPath = argc > 1 ? argv[1] : "input.txt";
+    const char* inputPath = argc > 1 ? argv[1] : "input/input.txt";
     ifstream file(inputPath);
 
     if (!file.is_open()) {
@@ -95,8 +95,8 @@ int main(int argc, char* argv[]) {
     cout << "\nExisting centers:\n";
     for (int i = 0; i < K; i++) {
         cout << "Center " << i + 1 << ": ("
-             << centers[i].first << ", "
-             << centers[i].second << ")" << endl;
+            << centers[i].first << ", "
+            << centers[i].second << ")" << endl;
     }
 
     cout << "\nNew customer location: ("
