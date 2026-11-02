@@ -18,6 +18,10 @@
 @media(max-width:760px){.problem-intro,.input-slide{grid-template-columns:1fr;gap:30px}.problem-intro .context{font-size:21px}.problem-intro .requirement{font-size:25px}.input-raw{font-size:28px}}
 @media(max-width:760px){.stage-layout,.stage-layout.wide-aside,.cover,.file-story{grid-template-columns:1fr}.cover h1{font-size:60px}.cover .visual{display:none}.head{display:block}.head .lead{max-width:50ch;margin-top:15px}.morph{grid-template-columns:1fr}.morph-arrow{display:none}.visual svg{height:340px}.foot{gap:14px}.chapter-name{display:none}.file-story{gap:25px}.table{font-size:14px}.table td,.table th{padding:12px 8px}.results{grid-template-columns:1fr 1fr}.result .large{font-size:50px}.centers-list{grid-template-columns:1fr 1fr}.source-grid{grid-template-columns:1fr}.rail{flex-wrap:wrap}.matrix span{min-height:43px;font-size:28px}}
 @media(prefers-reduced-motion:no-preference){.visual .new-edge{stroke-dasharray:1;stroke-dashoffset:1;animation:connect .65s ease-out forwards}.edge-math{animation:math-in .3s ease-out}.build{animation:build .25s ease-out}@keyframes connect{to{stroke-dashoffset:0}}@keyframes math-in{from{opacity:.5;transform:translateY(4px)}to{opacity:1;transform:none}}@keyframes build{from{opacity:.85}to{opacity:1}}}
+.bit-table{display:grid}.bit-row{display:grid;grid-template-columns:180px auto 1fr;align-items:center;gap:45px;padding:16px 0;border-top:1px solid var(--line)}.bit-row.head{border-top:0;padding:0 0 10px;color:var(--muted);font-size:13px}.bits{display:grid;grid-template-columns:repeat(4,58px);gap:8px}.bits span{height:58px;display:grid;place-items:center;border:1px solid var(--line);border-radius:4px;font:500 27px Consolas,monospace;color:var(--dim)}.bits span.on{background:var(--accent);border-color:var(--accent);color:var(--ink)}.bit-row.head .bits span{height:auto;border:0;font:13px/1.35 inherit;color:var(--muted);text-align:center;display:block}.bit-row.head .bits b{display:block;font-size:20px;font-weight:500;color:var(--text)}.bit-set{font-size:25px}.bit-eq{font-size:22px;color:var(--muted);font-variant-numeric:tabular-nums}.bit-eq b{font-size:34px;font-weight:500;color:var(--accent)}
+.dp-table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}.dp-table th{color:var(--muted);font-size:13px;font-weight:400;text-align:center;padding:0 8px 10px}.dp-table th:nth-child(-n+2){text-align:left}.dp-table td{padding:6px 8px;border-top:1px solid var(--line);text-align:center;font-size:23px;line-height:1.15}.dp-table tr.layer td{border-top:1px solid var(--dim)}.dp-table td.mask{text-align:left;font:15px Consolas,monospace;color:var(--muted);white-space:nowrap}.dp-table td.mask b{color:var(--text);font-weight:500}.dp-table td.set{text-align:left;font-size:16px;color:var(--muted);white-space:nowrap}.dp-table td.off{color:var(--dim)}.dp-table td small{display:block;font-size:11px;color:var(--muted)}.dp-table td.route{background:var(--accent);color:var(--ink);font-weight:500}.dp-table td.route small{color:var(--ink)}
+@media(min-width:900px) and (max-height:900px){.bit-row{padding:12px 0}.bits span{height:50px}.dp-table td{padding:4px 8px;font-size:21px}}
+@media(max-width:760px){.bit-row{grid-template-columns:1fr;gap:10px}.dp-table td{font-size:16px}.dp-table td.mask,.dp-table td.set{font-size:12px}}
 </style>
 </head>
 <body>
@@ -141,6 +145,18 @@ function pathLane(path,extend=false){
 function pathOption(path,status='',kind='',extend=false){return '<div class="path-option '+kind+'"><div class="path-option-head"><span class="status">'+status+'</span><span class="cost">'+routeCost(path)+' km</span></div>'+pathLane(path,extend)+'</div>';}
 function hkState(visited,end){return '<div class="hk-state"><span>Visitadas: <strong>{'+visited.map(letter).join(', ')+'}</strong></span><span>Última: <strong>'+letter(end)+'</strong></span></div>';}
 const levelThree=[[[0,1,2],[0,1,3]],[[0,2,1],[0,2,3]],[[0,3,1],[0,3,2]]];
+function bitCells(mask){return '<span class="bits">'+[3,2,1,0].map(b=>'<span class="'+((mask>>b)&1?'on':'')+'">'+((mask>>b)&1)+'</span>').join('')+'</span>';}
+function bitRow(set){const mask=set.reduce((m,c)=>m|(1<<c),0),parts=set.slice().sort((a,b)=>b-a).map(c=>1<<c);
+ return '<div class="bit-row"><span class="bit-set">{'+set.map(letter).join(', ')+'}</span>'+bitCells(mask)+'<span class="bit-eq">'+(parts.length>1?parts.join(' + ')+' = ':'')+'<b>'+mask+'</b></span></div>';}
+slide('Recorrido','Held-Karp: colonias visitadas en binario','Cada colonia ocupa un bit. Todo el conjunto visitado se guarda en un solo número.',[
+ {label:'Una colonia = un bit',html:layout(
+   '<div class="bit-table"><div class="bit-row head"><span>Visitadas</span><span class="bits">'+[3,2,1,0].map(b=>'<span><b>'+letter(b)+'</b>'+(1<<b)+'</span>').join('')+'</span><span>Número (mask)</span></div>'+
+   [[0],[0,1],[0,2,3],[0,1,2,3]].map(bitRow).join('')+'</div>',
+   L('Regla',call('Bit en 1 = colonia ya visitada.'))+
+   para('A es el bit de la derecha y vale 1; B vale 2, C vale 4 y D vale 8. El número es la suma de las colonias visitadas.')+
+   para('Así, <strong>dp[15][1]</strong> se lee: visité {A, B, C, D} y estoy en B.')+
+   code('mask & (1 << j)  // ¿ya visité j?\nmask | (1 << j)  // visitar j\nmask ^ (1 << j)  // quitar j'),true)}
+]);
 slide('Recorrido','Held-Karp: construcción de caminos parciales','Extendemos cada camino hacia una colonia que todavía no se ha visitado.',[
  {label:'Inicio en A',html:layout('<div class="hk-full">'+hkState([0],0)+pathOption([0],'Estado inicial','keep')+'</div>',
    L('Costo inicial',big(0,'km'))+para('Solo se ha visitado A. No se ha tomado ninguna conexión.')+code('dp[1][0] = 0;\n// Visitadas: {A}. Última: A.'))},
@@ -153,23 +169,20 @@ slide('Recorrido','Held-Karp: construcción de caminos parciales','Extendemos ca
 const partialToC=exact.path(13,2),partialToD=exact.path(13,3);
 const candidate57=partialToC.concat(1),candidate73=partialToD.concat(1);
 slide('Recorrido','Held-Karp: conservar o descartar un camino','Ahora ambos candidatos visitan A, B, C y D y terminan en B.',[
- {label:'Primer candidato: guardar 57',html:layout('<div>'+hkState([0,2,3],2)+pathOption(partialToC,'Estado previo: termina en C')+pathOption(candidate57,'Agregar B: nuevo estado {A,B,C,D}, final B','keep',true)+'</div>',
-   L('Extensión desde C',equation('39 + 18 = <b>57</b>'))+para('El estado completo con final B aún no tiene costo. Guardamos 57 y recordamos que llegamos desde C.')+code('dp[15][1] = 57;\nfrom[15][1] = 2; // C'))},
- {label:'Segundo candidato: descartar 73',html:layout('<div>'+hkState([0,1,2,3],1)+pathOption(candidate57,'Camino ya guardado','keep')+pathOption(candidate73,'Nuevo candidato: 52 + 21 = 73','reject',true)+'</div>',
-   L('Comparación del mismo estado',equation('73 &gt; <b>57</b>'))+para('El candidato que llega desde D cuesta más. Se descarta; el costo guardado y el anterior C no cambian.')+code('if (cost < dp[nextMask][j]) {\n    // Guardar solo si mejora.\n}\n// 73 < 57 es falso.'))},
- {label:'Por qué el descarte es seguro',html:layout('<div>'+hkState([0,1,2,3],1)+pathOption(candidate57,'Se conserva: menor costo al llegar a B','keep')+pathOption(candidate73,'Se descarta: mayor costo al llegar a B','reject')+'</div>',
-   L('Mismas opciones para continuar',call('A ambos solo les falta B→A.'))+equation('57 + 16 = <b>73</b>')+equation('73 + 16 = 89')+para('Añadir la misma conexión no puede hacer que el camino más caro sea mejor.'))}
+ {label:'Conservar 57 y descartar 73',html:layout('<div>'+hkState([0,1,2,3],1)+pathOption(candidate57,'Desde C: 39 + 18 = 57 · se conserva','keep',true)+pathOption(candidate73,'Desde D: 52 + 21 = 73 · se descarta','reject',true)+'</div>',
+   L('Mismo estado: dp[15][1]',equation('<b>57</b> &lt; 73'))+para('Ambos visitaron las mismas colonias y terminan en B. Solo se guarda el menor, y from recuerda que se llegó desde C.')+para('A los dos solo les falta regresar a A, así que el más caro nunca puede alcanzar al más barato.')+code('if (cost < dp[nextMask][j]) {\n    dp[nextMask][j] = cost;\n    from[nextMask][j] = i;\n}\n// dp[15][1] = 57, from[15][1] = 2 (C)'))}
 ]);
-const closingFrames=exact.finals.map(f=>({
- label:'Evaluar cierre desde '+letter(f.last),
- html:layout('<div>'+hkState([0,1,2,3],f.last)+pathOption(f.path.concat(0),'Agregar el regreso a A',f.total===73?'keep':'',true)+'</div>',
-   L('Costo parcial + regreso',equation(f.partial+' + '+f.back+' = <b>'+f.total+'</b>'))+
-   para('Este es el mejor camino que termina en '+letter(f.last)+'. Ahora añadimos su conexión al origen.')+
-   code('cost = dp[FULL - 1][i] + matrix[i][0];'))+
-   '<div class="closings">'+exact.finals.map(g=>'<div class="closing '+(g.last===f.last?'win':'')+'"><div class="eyeline">Final '+letter(g.last)+'</div><div class="equation">'+g.partial+' + '+g.back+' = <b>'+g.total+'</b></div></div>').join('')+'</div>'
-}));
+const closingFrames=[{
+ label:'Comparar los tres cierres',
+ html:layout('<div>'+hkState([0,1,2,3],exact.best.last)+pathOption(exact.best.path.concat(0),'Menor cierre: desde '+letter(exact.best.last)+' + regreso a A','keep',true)+'</div>',
+   L('Costo parcial + regreso',call('Se suma el regreso a A a cada final y gana el menor.'))+
+   para('Cada costo parcial es el mejor camino que visitó todas las colonias y termina en B, C o D.')+
+   code('cost = dp[FULL-1][i] + matrix[i][0];\nif (cost < best) {\n    best = cost;\n    last = i;\n}'))+
+   '<div class="closings">'+exact.finals.map(g=>'<div class="closing '+(g.last===exact.best.last?'win':'')+'"><div class="eyeline">Final '+letter(g.last)+'</div><div class="equation">'+g.partial+' + '+g.back+' = <b>'+g.total+'</b></div></div>').join('')+'</div>'+
+   '<p class="bottom-note">B y D empatan en 73 porque son el mismo ciclo recorrido en sentido contrario. El ciclo revisa B primero y solo cambia ante un costo menor.</p>'
+}];
 closingFrames.push({label:'Seleccionar el costo mínimo',html:layout(plot(baseEdges,{chosen:pathPairs(exact.best.path.concat(0))}),
- L('Menor ciclo completo',big(73,'km'))+para('Los cierres desde B y D empatan. El ciclo revisa B primero y actualiza solo ante un costo menor: conserva B.')+
+ L('Menor ciclo completo',big(73,'km'))+para('Ruta A → D → C → B → A. El empate con D es este mismo ciclo al revés, así que conservar B no pierde nada.')+
  code('if (cost < best) {\n    best = cost;\n    last = i;\n}'))});
 slide('Recorrido','Held-Karp: cierre del ciclo y selección del mínimo','Los costos parciales todavía no incluyen el regreso a A.',closingFrames);
 const reconstruction=[],backwards=[exact.best.last];
@@ -191,6 +204,30 @@ reconstruction.push({label:'Invertir la secuencia y regresar a A',html:layout(
  L('Distancia total',big(73,'km'))+para('La reconstrucción produjo B, C, D, A. La invertimos y añadimos el regreso a A.')+
  code('reverse(path.begin(), path.end());\n// A → D → C → B. main añade → A.'))});
 slide('Recorrido','Held-Karp: reconstrucción de la ruta final','from guarda la colonia anterior del camino que se conservó.',reconstruction);
+function dpTable(){
+ const n=D.length,full=1<<n,count=m=>m.toString(2).split('1').length-1,masks=[];
+ for(let m=1;m<full;m++)if(m&1)masks.push(m);
+ masks.sort((a,b)=>count(a)-count(b)||a-b);
+ const route=new Set();let m=full-1,c=exact.best.last;while(c!==-1){route.add(m+'_'+c);const p=exact.from[m][c];m^=1<<c;c=p;}
+ let html='<table class="dp-table"><thead><tr><th>mask</th><th>Visitadas</th>'+D.map((_,i)=>'<th>Termina en '+letter(i)+'</th>').join('')+'</tr></thead><tbody>',last=0;
+ for(const mask of masks){
+   html+='<tr class="'+(last&&count(mask)!==last?'layer':'')+'"><td class="mask"><b>'+mask.toString(2).padStart(n,'0')+'</b> · '+mask+'</td><td class="set">{'+D.map((_,i)=>i).filter(i=>mask&(1<<i)).map(letter).join(', ')+'}</td>';
+   last=count(mask);
+   for(let i=0;i<n;i++){const v=exact.dp[mask][i];
+     if(!Number.isFinite(v)){html+='<td class="off">·</td>';continue;}
+     const from=exact.from[mask][i];
+     html+='<td class="'+(route.has(mask+'_'+i)?'route':'')+'">'+v+'<small>'+(from===-1?'inicio':'desde '+letter(from))+'</small></td>';}
+   html+='</tr>';
+ }
+ return html+'</tbody></table>';
+}
+slide('Recorrido','Held-Karp: la tabla dp completa','Cada celda guarda el mejor costo para un par (visitadas, última). Se llena de arriba hacia abajo, una capa a la vez.',[
+ {label:'Tabla llena',html:layout(dpTable(),
+   L('Ruta final en la tabla',call('0 → 32 → 39 → 57<br><span class="accent">+ 16 = 73 km</span>'))+
+   para('Las celdas resaltadas son las que usa la reconstrucción: from lleva de una a la anterior, quitando un bit cada vez.')+
+   para('Los puntos son estados imposibles: terminar en una colonia que no se ha visitado, o regresar a A a mitad del camino.')+
+   code('Tabla reservada: 2ᴺ × N = 16 × 4\nCon N = 20: ≈ 21 millones de celdas'),true)}
+]);
 slide('Flujo','Problema 3: matriz de capacidades y grafo dirigido','La capacidad de A→B no tiene por qué ser igual a la de B→A.',[
  morph(C,[[0,1],[1,0]],plot([[0,1,48],[1,0,52]],{two:true,directed:true,focus:[[0,1],[1,0]]}),'<strong>A→B: 48</strong><span>≠</span><strong>B→A: 52</strong>'),
  layout(workingGraph(C),L('Origen → destino',big('A → D'))+para('Queremos enviar la mayor cantidad posible, repartida entre varios caminos.')+para('<span class="muted">Mostramos las direcciones de avance. Las inversas siguen guardadas en la matriz.</span>'))
